@@ -1,0 +1,3521 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pinnacle Excellence Awards — Admin Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --dark: #0F1A14;
+      --green-deep: #1A3327;
+      --green: #2B6E4B;
+      --green-bright: #2EB872;
+      --gold: #F5C842;
+      --gold-soft: #FFE57A;
+      --ivory: #FFFFFF;
+      --white: #FFFFFF;
+      --ink: #0F1A14;
+      --muted: #5C6A62;
+      --line: rgba(0,0,0,.09);
+      --line-light: rgba(255,255,255,.14);
+      --font-display: 'Quicksand', sans-serif;
+      --font-body: 'Quicksand', sans-serif;
+      --sidebar-width: 260px;
+      --header-height: 70px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: #f4f7f6;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--dark);
+      color: var(--ivory);
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+      padding: 0 0 80px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-brand {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--line-light);
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand .brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--ivory);
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-brand .brand span {
+      color: var(--gold);
+    }
+
+    .sidebar-brand .sub {
+      display: block;
+      font-size: 0.45rem;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      color: #6C7B72;
+      margin-top: -2px;
+    }
+
+    .sidebar-brand .badge-admin {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.55rem;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      padding: 16px 12px 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .sidebar-nav .nav-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6C7B72;
+      font-weight: 600;
+      padding: 12px 12px 6px;
+    }
+
+    .sidebar-nav .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: #9FB1A8;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      margin-bottom: 2px;
+    }
+
+    .sidebar-nav .nav-item:hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--ivory);
+    }
+
+    .sidebar-nav .nav-item.active {
+      background: rgba(46,184,114,0.15);
+      color: var(--green-bright);
+    }
+
+    .sidebar-nav .nav-item i {
+      width: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .sidebar-nav .nav-item .badge-count {
+      margin-left: auto;
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.6rem;
+      padding: 1px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    /* SIDEBAR USER - FIXED AT BOTTOM */
+    .sidebar-user {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 20px;
+      border-top: 1px solid var(--line-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--dark);
+      flex-shrink: 0;
+    }
+
+    .sidebar-user .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-user .info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sidebar-user .info .name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ivory);
+    }
+
+    .sidebar-user .info .role {
+      font-size: 0.65rem;
+      color: #6C7B72;
+    }
+
+    .sidebar-user .logout-btn {
+      background: transparent;
+      border: 1px solid var(--line-light);
+      color: #9FB1A8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .sidebar-user .logout-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--white);
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .header .page-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .header .page-title small {
+      font-weight: 400;
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: block;
+    }
+
+    .header .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header .header-actions .btn-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+
+    .header .header-actions .btn-icon:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--bg);
+    }
+
+    .hamburger {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    /* CONTENT AREA */
+    .content-area {
+      padding: 24px 32px 40px;
+    }
+
+    /* STATS CARDS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      transition: all 0.2s ease;
+    }
+
+    .stat-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+
+    .stat-card .stat-icon {
+      font-size: 1.5rem;
+      color: var(--green);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .stat-card .stat-number {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .stat-card .stat-change {
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .stat-card .stat-change.up {
+      color: var(--green-bright);
+    }
+
+    .stat-card .stat-change.down {
+      color: #dc3545;
+    }
+
+    /* CARDS */
+    .card-custom {
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .card-custom .card-header-custom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-custom .card-header-custom h5 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .card-custom .card-header-custom .sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* TABLE */
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 12px;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--line);
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(46,184,114,0.03);
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-status.active {
+      background: #e6f4ec;
+      color: var(--green);
+    }
+
+    .badge-status.completed {
+      background: #e3f0ff;
+      color: #1a6dff;
+    }
+
+    .badge-status.pending {
+      background: #fff3e0;
+      color: #e67e22;
+    }
+
+    .badge-status.draft {
+      background: var(--bg);
+      color: var(--muted);
+    }
+
+    .badge-status.approved {
+      background: #e6f4ec;
+      color: var(--green);
+    }
+
+    .badge-status.rejected {
+      background: #f8d7da;
+      color: #dc3545;
+    }
+
+    /* BUTTONS */
+    .btn-admin {
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border: 1px solid var(--line);
+      background: var(--white);
+      color: var(--ink);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-admin:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .btn-admin-primary {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--white);
+    }
+
+    .btn-admin-primary:hover {
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+      color: var(--white);
+    }
+
+    .btn-admin-gold {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--dark);
+    }
+
+    .btn-admin-gold:hover {
+      background: var(--gold-soft);
+      border-color: var(--gold-soft);
+      color: var(--dark);
+    }
+
+    .btn-admin-danger {
+      color: #dc3545;
+      border-color: #f5c6cb;
+    }
+
+    .btn-admin-danger:hover {
+      background: #f8d7da;
+      border-color: #dc3545;
+    }
+
+    .btn-admin-sm {
+      padding: 4px 12px;
+      font-size: 0.6rem;
+    }
+
+    .btn-admin-success {
+      color: var(--green);
+      border-color: #b8d4c0;
+    }
+
+    .btn-admin-success:hover {
+      background: #e6f4ec;
+      border-color: var(--green);
+    }
+
+    /* FORM ELEMENTS */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .form-control-admin {
+      width: 100%;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      background: var(--white);
+      color: var(--ink);
+    }
+
+    .form-control-admin:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(46,184,114,0.12);
+    }
+
+    .form-control-admin::placeholder {
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* UPLOAD ZONE */
+    .upload-zone {
+      border: 2px dashed var(--line);
+      border-radius: 12px;
+      padding: 40px 20px;
+      text-align: center;
+      background: #fafcfa;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .upload-zone:hover {
+      border-color: var(--green);
+      background: var(--bg);
+    }
+
+    .upload-zone .icon {
+      font-size: 2.5rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .upload-zone h6 {
+      font-weight: 600;
+      font-size: 0.9rem;
+      font-family: var(--font-display);
+    }
+
+    .upload-zone p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    /* GRID */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* LEADERBOARD */
+    .leader-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .leader-item:last-child {
+      border-bottom: none;
+    }
+
+    .leader-item .rank {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gold);
+      width: 28px;
+      text-align: center;
+    }
+
+    .leader-item .info {
+      flex: 1;
+    }
+
+    .leader-item .info .name {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--ink);
+    }
+
+    .leader-item .info .category {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .leader-item .votes {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--green);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:992px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .hamburger {
+        display: block;
+      }
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .header {
+        padding: 12px 16px;
+      }
+      .content-area {
+        padding: 16px;
+      }
+    }
+
+    @media(max-width:576px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .header .page-title {
+        font-size: 0.95rem;
+      }
+    }
+
+    /* SIDEBAR OVERLAY */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 999;
+    }
+
+    .sidebar-overlay.open {
+      display: block;
+    }
+
+    /* CHART WRAPPER */
+    .chart-wrapper {
+      height: 250px;
+      position: relative;
+    }
+
+    /* MODAL OVERLAY */
+    .modal-overlay-custom {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay-custom.open {
+      opacity: 1;
+    }
+
+    .modal-overlay-custom .modal-box {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 28px;
+      width: 560px;
+      max-width: 92vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.25s ease;
+    }
+
+    .modal-overlay-custom.open .modal-box {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-overlay-custom .modal-box .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-overlay-custom .modal-box .modal-head h5 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .modal-overlay-custom .modal-box .modal-head .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .modal-overlay-custom .modal-box .modal-foot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    /* Toast */
+    .toast-stack {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast-item {
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: var(--dark);
+      color: var(--ivory);
+      font-weight: 500;
+      font-size: 0.85rem;
+      min-width: 240px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      animation: toastIn 0.3s ease;
+      border-left: 3px solid var(--green-bright);
+    }
+
+    .toast-item.error {
+      border-left-color: #dc3545;
+    }
+
+    .toast-item.success {
+      border-left-color: var(--green-bright);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Partner logo in table */
+    .partner-logo-thumb {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 6px;
+      background: #f4f7f6;
+      padding: 4px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state i {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      opacity: 0.3;
+    }
+
+    .empty-state h6 {
+      font-weight: 600;
+      font-family: var(--font-display);
+    }
+
+    .empty-state p {
+      font-size: 0.85rem;
+    }
+
+    /* LOGIN MODAL OVERLAY */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease;
+      display: none;
+    }
+
+    .login-overlay.show {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .login-box {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 48px 40px;
+      width: 420px;
+      max-width: 92vw;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+
+    .login-box .login-logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .login-box .login-logo h1 {
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .login-box .login-logo h1 span {
+      color: #F5C842;
+    }
+
+    .login-box .login-logo .sub {
+      color: #6C7B72;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: block;
+      margin-top: -2px;
+    }
+
+    .login-box .login-logo .badge {
+      display: inline-block;
+      background: #F5C842;
+      color: #0F1A14;
+      font-size: 0.55rem;
+      padding: 2px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .login-box .form-group {
+      margin-bottom: 20px;
+    }
+
+    .login-box .form-group label {
+      display: block;
+      color: #9FB1A8;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .login-box .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .login-box .form-group input:focus {
+      outline: none;
+      border-color: #F5C842;
+      box-shadow: 0 0 0 3px rgba(245,200,66,0.15);
+    }
+
+    .login-box .form-group input::placeholder {
+      color: #4a5a52;
+    }
+
+    .login-box .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: #F5C842;
+      color: #0F1A14;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .login-box .btn-login:hover {
+      background: #FFE57A;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(245,200,66,0.35);
+    }
+
+    .login-box .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #4a5a52;
+      font-size: 0.7rem;
+    }
+
+    .login-box .login-footer span {
+      color: #6C7B72;
+    }
+
+    .login-error {
+      background: rgba(220,53,69,0.15);
+      border: 1px solid rgba(220,53,69,0.2);
+      color: #f5a0a0;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .login-error i {
+      color: #dc3545;
+    }
+
+    .login-error.show {
+      display: flex;
+    }
+
+    /* CATEGORIES - CARD STYLE */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .category-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 20px;
+      transition: all 0.2s ease;
+    }
+
+    .category-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border-color: var(--green-bright);
+    }
+
+    .category-card .cat-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .category-card .cat-group {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .category-card .cat-count {
+      font-size: 0.8rem;
+      color: var(--green);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .category-card .cat-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    /* TRANSACTION STATUS */
+    .badge-status.completed {
+      background: #e6f4ec;
+      color: var(--green);
+    }
+    .badge-status.pending {
+      background: #fff3e0;
+      color: #e67e22;
+    }
+    .badge-status.failed {
+      background: #f8d7da;
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand">PINNACLE <span>EXCELLENCE</span><span class="sub">AWARDS AFRICA</span></div>
+    <span class="badge-admin"><i class="fas fa-shield-alt"></i> Admin Panel</span>
+  </div>
+  
+  <nav class="sidebar-nav">
+    <div class="nav-label">Main</div>
+    <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+      <i class="fas fa-home"></i> Dashboard
+    </a>
+    <a class="nav-item" data-page="revenue" onclick="navigate('revenue')">
+      <i class="fas fa-coins"></i> Revenue
+      <span class="badge-count" id="revenueBadge">0</span>
+    </a>
+    <a class="nav-item" data-page="votes" onclick="navigate('votes')">
+      <i class="fas fa-vote-yea"></i> Votes & Standings
+      <span class="badge-count" id="voteBadge">0</span>
+    </a>
+    <a class="nav-item" data-page="nominees" onclick="navigate('nominees')">
+      <i class="fas fa-users"></i> Nominees
+      <span class="badge-count" id="nomineeBadge">0</span>
+    </a>
+    <a class="nav-item" data-page="categories" onclick="navigate('categories')">
+      <i class="fas fa-tags"></i> Categories
+      <span class="badge-count" id="categoryBadge">0</span>
+    </a>
+
+    <div class="nav-label" style="margin-top:12px;">Content</div>
+    <a class="nav-item" data-page="gallery" onclick="navigate('gallery')">
+      <i class="fas fa-images"></i> Gallery
+      <span class="badge-count" id="galleryBadge">0</span>
+    </a>
+    <a class="nav-item" data-page="news" onclick="navigate('news')">
+      <i class="fas fa-newspaper"></i> Newsroom
+      <span class="badge-count" id="newsBadge">0</span>
+    </a>
+    <a class="nav-item" data-page="hall-of-fame" onclick="navigate('hall-of-fame')">
+      <i class="fas fa-trophy"></i> Hall of Fame
+      <span class="badge-count" id="hofBadge">0</span>
+    </a>
+    <a class="nav-item" data-page="partners" onclick="navigate('partners')">
+      <i class="fas fa-handshake"></i> Partners
+      <span class="badge-count" id="partnerBadge">0</span>
+    </a>
+
+    <div class="nav-label" style="margin-top:12px;">Moderation</div>
+    <a class="nav-item" data-page="user-nominations" onclick="navigate('user-nominations')">
+      <i class="fas fa-user-plus"></i> User Nominations
+      <span class="badge-count" id="nominationBadge">0</span>
+    </a>
+
+    <div class="nav-label" style="margin-top:12px;">Settings</div>
+    <a class="nav-item" data-page="settings" onclick="navigate('settings')">
+      <i class="fas fa-cog"></i> Settings
+    </a>
+    <a class="nav-item" data-page="countdown" onclick="navigate('countdown')">
+      <i class="fas fa-clock"></i> Countdown
+    </a>
+  </nav>
+
+  <!-- SIDEBAR USER - FIXED AT BOTTOM -->
+  <div class="sidebar-user">
+    <div class="avatar" id="userAvatar">A</div>
+    <div class="info">
+      <div class="name" id="userName">Admin</div>
+      <div class="role">Administrator</div>
+    </div>
+    <a href="{% url 'admin_logout' %}" class="logout-btn">Sign Out</a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+  <!-- HEADER -->
+  <header class="header">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <div class="page-title" id="pageTitle">
+        Dashboard
+        <small>Pinnacle Excellence Awards · Admin Panel</small>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a href="{% url 'index' %}" class="btn-icon" title="View Site" target="_blank">
+        <i class="fas fa-eye"></i>
+      </a>
+      <button class="btn-icon" title="Refresh" onclick="location.reload()">
+        <i class="fas fa-sync"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENT AREA -->
+  <div class="content-area" id="contentArea">
+    <div class="text-center" style="padding:40px 0;">
+      <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--green);"></i>
+      <p style="color:var(--muted);margin-top:12px;">Loading dashboard...</p>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST STACK -->
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- LOGIN MODAL OVERLAY -->
+<div class="login-overlay show" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">
+      <h1>PINNACLE <span>EXCELLENCE</span><span class="sub">AWARDS AFRICA</span></h1>
+      <span class="badge"><i class="fas fa-shield-alt"></i> Admin Panel</span>
+    </div>
+    
+    <div class="login-error" id="loginError">
+      <i class="fas fa-exclamation-circle"></i>
+      <span id="errorText">Invalid credentials</span>
+    </div>
+    
+    <form id="loginForm">
+      {% csrf_token %}
+      <div class="form-group">
+        <label><i class="fas fa-user" style="margin-right:6px;color:#F5C842;"></i> Username</label>
+        <input type="text" name="username" id="username" placeholder="Enter username" required>
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-lock" style="margin-right:6px;color:#F5C842;"></i> Password</label>
+        <input type="password" name="password" id="password" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn-login" id="loginBtn"><i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Sign In</button>
+    </form>
+    
+    <div class="login-footer">
+      <span>Protected Admin Area — Authorized Access Only</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// LOGIN HANDLER
+// ============================================================
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    const errorDiv = document.getElementById('loginError');
+    const errorText = document.getElementById('errorText');
+    
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+    btn.disabled = true;
+    errorDiv.classList.remove('show');
+    
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    fetch('/admin-login/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrfToken
+        },
+        body: 'username=' + encodeURIComponent(document.getElementById('username').value) + 
+              '&password=' + encodeURIComponent(document.getElementById('password').value)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = data.redirect_url || '/admin-dashboard/';
+        } else {
+            errorText.textContent = data.message || 'Invalid credentials';
+            errorDiv.classList.add('show');
+            btn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Sign In';
+            btn.disabled = false;
+        }
+    })
+    .catch(() => {
+        errorText.textContent = 'An error occurred. Please try again.';
+        errorDiv.classList.add('show');
+        btn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Sign In';
+        btn.disabled = false;
+    });
+});
+
+// ============================================================
+// CHECK LOGIN STATUS
+// ============================================================
+
+function checkLoginStatus() {
+    fetch('/admin-dashboard/')
+        .then(response => {
+            if (response.redirected && response.url.includes('admin-login')) {
+                document.getElementById('loginOverlay').classList.add('show');
+            } else {
+                document.getElementById('loginOverlay').classList.remove('show');
+            }
+        })
+        .catch(() => {
+            document.getElementById('loginOverlay').classList.add('show');
+        });
+}
+
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showToast(message, type = 'success') {
+    const stack = document.getElementById('toastStack');
+    const toast = document.createElement('div');
+    toast.className = `toast-item ${type}`;
+    toast.textContent = message;
+    stack.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        toast.style.transition = 'all 0.25s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+function formatNumber(n) {
+    return n ? n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0';
+}
+
+function getAvatarLetter(name) {
+    return name ? name.charAt(0).toUpperCase() : '?';
+}
+
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+let currentPage = 'dashboard';
+let charts = {};
+let countdownInterval = null;
+
+function navigate(page) {
+    currentPage = page;
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === page));
+    renderPage(page);
+    
+    const titles = {
+        dashboard: 'Dashboard',
+        revenue: 'Revenue',
+        votes: 'Votes & Standings',
+        nominees: 'Nominees',
+        categories: 'Categories',
+        gallery: 'Gallery',
+        news: 'Newsroom',
+        'hall-of-fame': 'Hall of Fame',
+        partners: 'Partners',
+        settings: 'Settings',
+        countdown: 'Countdown',
+        'user-nominations': 'User Nominations'
+    };
+    document.getElementById('pageTitle').innerHTML = (titles[page] || 'Dashboard') + '<small>Pinnacle Excellence Awards · Admin Panel</small>';
+    
+    if (window.innerWidth <= 992) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+}
+
+function renderPage(page) {
+    const area = document.getElementById('contentArea');
+    switch(page) {
+        case 'dashboard': renderDashboard(area); break;
+        case 'revenue': renderRevenue(area); break;
+        case 'votes': renderVotes(area); break;
+        case 'nominees': renderNominees(area); break;
+        case 'categories': renderCategories(area); break;
+        case 'gallery': renderGallery(area); break;
+        case 'news': renderNews(area); break;
+        case 'hall-of-fame': renderHallOfFame(area); break;
+        case 'partners': renderPartners(area); break;
+        case 'settings': renderSettings(area); break;
+        case 'countdown': renderCountdown(area); break;
+        case 'user-nominations': renderUserNominations(area); break;
+        default: area.innerHTML = '<div class="card-custom"><p>Page not found</p></div>';
+    }
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+
+function renderDashboard(area) {
+    area.innerHTML = `
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <span class="stat-icon"><i class="fas fa-vote-yea"></i></span>
+                <div class="stat-number" id="statTotalVotes">0</div>
+                <div class="stat-label">Total Votes</div>
+                <div class="stat-change up"><i class="fas fa-arrow-up"></i> <span id="statTodayVotes">0</span> today</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon"><i class="fas fa-users"></i></span>
+                <div class="stat-number" id="statNominees">0</div>
+                <div class="stat-label">Total Nominees</div>
+                <div class="stat-change">Across <span id="statCategories">0</span> categories</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon"><i class="fas fa-coins" style="color:var(--gold);"></i></span>
+                <div class="stat-number" id="statTotalRevenue">KES 0</div>
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-change up"><i class="fas fa-arrow-up"></i> <span id="statTodayRevenue">KES 0</span> today</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon"><i class="fas fa-user-plus"></i></span>
+                <div class="stat-number" id="statPendingNominations">0</div>
+                <div class="stat-label">Pending Nominations</div>
+                <div class="stat-change up"><i class="fas fa-clock"></i> Awaiting review</div>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:20px;">
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    <h5><i class="fas fa-trophy" style="color:var(--gold);margin-right:8px;"></i> Top Nominees</h5>
+                    <span class="sub">By total votes</span>
+                </div>
+                <div class="table-wrap">
+                    <table id="topNomineesTable">
+                        <tr><th>#</th><th>Nominee</th><th>Category</th><th>Votes</th></tr>
+                        <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">Loading...</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="card-custom">
+                <div class="card-header-custom">
+                    <h5><i class="fas fa-list-ol" style="color:var(--gold);margin-right:8px;"></i> Category Leaders</h5>
+                    <span class="sub">Current standings</span>
+                </div>
+                <div id="categoryLeaders">
+                    <div style="color:var(--muted);padding:12px;">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-handshake" style="color:var(--gold);margin-right:8px;"></i> Partners</h5>
+                <span class="sub">Active partners</span>
+            </div>
+            <div id="dashboardPartners" style="display:flex;flex-wrap:wrap;gap:16px;">
+                <div style="color:var(--muted);padding:12px;">Loading partners...</div>
+            </div>
+        </div>
+    `;
+    
+    fetchStats();
+    fetchRevenueStats();
+    fetchPartners();
+    fetchTopNominees();
+    fetchCategoryLeaders();
+}
+
+function fetchStats() {
+    Promise.all([
+        fetch('/api/votes/').then(r => r.json()).catch(() => ({ votes: [] })),
+        fetch('/api/nominees/').then(r => r.json()).catch(() => ({ nominees: [] })),
+        fetch('/api/categories/').then(r => r.json()).catch(() => ({ categories: [] })),
+        fetch('/api/partners/').then(r => r.json()).catch(() => ({ partners: [] })),
+        fetch('/api/user-nominations/').then(r => r.json()).catch(() => ({ nominations: [] }))
+    ])
+    .then(([votes, nominees, categories, partners, nominations]) => {
+        const totalVotes = (votes.votes || []).length;
+        const today = new Date().toISOString().split('T')[0];
+        const todayVotes = (votes.votes || []).filter(v => v.created_at && v.created_at.startsWith(today)).length;
+        const pendingNominations = (nominations.nominations || []).filter(n => n.status === 'pending').length;
+        
+        document.getElementById('statTotalVotes').textContent = formatNumber(totalVotes);
+        document.getElementById('statTodayVotes').textContent = todayVotes;
+        document.getElementById('statNominees').textContent = formatNumber((nominees.nominees || []).length);
+        document.getElementById('statCategories').textContent = formatNumber((categories.categories || []).length);
+        document.getElementById('statPartners').textContent = formatNumber((partners.partners || []).length);
+        document.getElementById('statPendingNominations').textContent = formatNumber(pendingNominations);
+        
+        document.getElementById('voteBadge').textContent = totalVotes;
+        document.getElementById('nomineeBadge').textContent = (nominees.nominees || []).length;
+        document.getElementById('categoryBadge').textContent = (categories.categories || []).length;
+        document.getElementById('partnerBadge').textContent = (partners.partners || []).length;
+        document.getElementById('nominationBadge').textContent = pendingNominations;
+    })
+    .catch(() => {});
+}
+
+function fetchRevenueStats() {
+    fetch('/api/revenue-stats/')
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('statTotalRevenue').textContent = 'KES ' + formatNumber(data.total_revenue);
+                document.getElementById('statTodayRevenue').textContent = 'KES ' + formatNumber(data.today_revenue);
+                document.getElementById('revenueBadge').textContent = data.total_transactions;
+            }
+        })
+        .catch(() => {});
+}
+
+function fetchPartners() {
+    fetch('/api/partners/')
+        .then(r => r.json())
+        .then(data => {
+            const container = document.getElementById('dashboardPartners');
+            const partners = data.partners || [];
+            if (partners.length) {
+                container.innerHTML = partners.slice(0, 6).map(p => `
+                    <div style="display:flex;align-items:center;gap:12px;background:var(--bg);padding:10px 16px;border-radius:8px;border:1px solid var(--line);">
+                        ${p.logo_url ? `<img src="${p.logo_url}" alt="${p.name}" style="width:40px;height:40px;object-fit:contain;">` : 
+                        `<div style="width:40px;height:40px;background:var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);"><i class="fas fa-building"></i></div>`}
+                        <div>
+                            <div style="font-weight:600;font-size:0.85rem;">${p.name}</div>
+                            <div style="font-size:0.65rem;color:var(--muted);">${p.type_display || p.type}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<div style="color:var(--muted);padding:12px;">No partners added yet.</div>';
+            }
+        })
+        .catch(() => {});
+}
+
+function fetchTopNominees() {
+    fetch('/api/nominees/')
+        .then(r => r.json())
+        .then(data => {
+            const nominees = (data.nominees || []).sort((a, b) => (b.votes || 0) - (a.votes || 0)).slice(0, 5);
+            const table = document.getElementById('topNomineesTable');
+            if (nominees.length) {
+                table.innerHTML = nominees.map((n, i) => `
+                    <tr>
+                        <td><strong>#${i+1}</strong></td>
+                        <td><strong>${n.name}</strong></td>
+                        <td>${n.category}</td>
+                        <td>${formatNumber(n.votes || 0)}</td>
+                    </tr>
+                `).join('');
+            } else {
+                table.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">No nominees yet</td></tr>';
+            }
+        })
+        .catch(() => {});
+}
+
+function fetchCategoryLeaders() {
+    fetch('/api/standings/')
+        .then(r => r.json())
+        .then(data => {
+            const container = document.getElementById('categoryLeaders');
+            const standings = data.standings || [];
+            if (standings.length) {
+                container.innerHTML = standings.slice(0, 5).map((c, i) => `
+                    <div class="leader-item">
+                        <div class="rank">#${i+1}</div>
+                        <div class="info">
+                            <div class="name">${c.leader || 'No leader'}</div>
+                            <div class="category">${c.category}</div>
+                        </div>
+                        <div class="votes">${formatNumber(c.leader_votes || 0)} votes</div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<div class="empty-state"><p>No data available</p></div>';
+            }
+        })
+        .catch(() => {});
+}
+
+// ============================================================
+// REVENUE PAGE
+// ============================================================
+
+function renderRevenue(area) {
+    area.innerHTML = `
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+            <div class="stat-card">
+                <div class="stat-number" id="revTotal">KES 0</div>
+                <div class="stat-label">Total Revenue</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="revToday">KES 0</div>
+                <div class="stat-label">Today's Revenue</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="revCount">0</div>
+                <div class="stat-label">Total Transactions</div>
+            </div>
+        </div>
+        
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-list" style="color:var(--gold);margin-right:8px;"></i> Transactions</h5>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <input type="date" id="filterFrom" class="form-control-admin" style="width:150px;">
+                    <input type="date" id="filterTo" class="form-control-admin" style="width:150px;">
+                    <button class="btn-admin btn-admin-sm" onclick="filterTransactions()"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn-admin btn-admin-gold btn-admin-sm" onclick="exportTransactions()"><i class="fas fa-download"></i> Export CSV</button>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>ID</th><th>Transaction ID</th><th>Nominee</th><th>Category</th><th>Phone</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+                    <tbody id="transactionsTableBody">
+                        <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Loading transactions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    
+    loadRevenueStats();
+    loadTransactions();
+}
+
+function loadRevenueStats() {
+    fetch('/api/revenue-stats/')
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('revTotal').textContent = 'KES ' + formatNumber(data.total_revenue);
+                document.getElementById('revToday').textContent = 'KES ' + formatNumber(data.today_revenue);
+                document.getElementById('revCount').textContent = formatNumber(data.total_transactions);
+            }
+        })
+        .catch(() => {});
+}
+
+function loadTransactions() {
+    fetch('/api/transactions/')
+        .then(r => r.json())
+        .then(data => {
+            const body = document.getElementById('transactionsTableBody');
+            const transactions = data.transactions || [];
+            
+            if (transactions.length) {
+                body.innerHTML = transactions.map(t => `
+                    <tr>
+                        <td>#${t.id}</td>
+                        <td><strong>${t.transaction_id}</strong></td>
+                        <td>${t.nominee}</td>
+                        <td>${t.category}</td>
+                        <td>${t.phone || '—'}</td>
+                        <td><strong>KES ${formatNumber(t.amount)}</strong></td>
+                        <td><span class="badge-status ${t.status}">${t.status}</span></td>
+                        <td>${t.date}</td>
+                    </tr>
+                `).join('');
+            } else {
+                body.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fas fa-coins"></i><h6>No Transactions</h6><p>Transactions will appear here once users start voting.</p></div></td></tr>';
+            }
+        })
+        .catch(() => {
+            document.getElementById('transactionsTableBody').innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Error loading transactions</td></tr>';
+        });
+}
+
+function filterTransactions() {
+    const from = document.getElementById('filterFrom').value;
+    const to = document.getElementById('filterTo').value;
+    let url = '/api/transactions/';
+    const params = [];
+    if (from) params.push('from_date=' + from);
+    if (to) params.push('to_date=' + to);
+    if (params.length) url += '?' + params.join('&');
+    
+    fetch(url)
+        .then(r => r.json())
+        .then(data => {
+            const body = document.getElementById('transactionsTableBody');
+            const transactions = data.transactions || [];
+            
+            if (transactions.length) {
+                body.innerHTML = transactions.map(t => `
+                    <tr>
+                        <td>#${t.id}</td>
+                        <td><strong>${t.transaction_id}</strong></td>
+                        <td>${t.nominee}</td>
+                        <td>${t.category}</td>
+                        <td>${t.phone || '—'}</td>
+                        <td><strong>KES ${formatNumber(t.amount)}</strong></td>
+                        <td><span class="badge-status ${t.status}">${t.status}</span></td>
+                        <td>${t.date}</td>
+                    </tr>
+                `).join('');
+            } else {
+                body.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fas fa-coins"></i><h6>No Transactions Found</h6><p>Try adjusting your filters.</p></div></td></tr>';
+            }
+        })
+        .catch(() => {
+            showToast('Error filtering transactions', 'error');
+        });
+}
+
+function exportTransactions() {
+    window.location.href = '/api/transactions/export/';
+}
+
+// ============================================================
+// CATEGORIES
+// ============================================================
+
+function renderCategories(area) {
+    area.innerHTML = `
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-tags" style="color:var(--gold);margin-right:8px;"></i> Categories</h5>
+                <button class="btn-admin btn-admin-primary" onclick="openCategoryModal()"><i class="fas fa-plus"></i> Add Category</button>
+            </div>
+            <div id="categoriesGrid" class="category-grid">
+                <div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px;">Loading categories...</div>
+            </div>
+        </div>
+    `;
+    loadCategories();
+}
+
+function loadCategories() {
+    fetch('/api/categories/')
+        .then(r => r.json())
+        .then(data => {
+            const grid = document.getElementById('categoriesGrid');
+            const categories = data.categories || [];
+            document.getElementById('categoryBadge').textContent = categories.length;
+            
+            if (categories.length) {
+                grid.innerHTML = categories.map(c => `
+                    <div class="category-card">
+                        <div class="cat-name">${c.name}</div>
+                        <div class="cat-group">${c.group}</div>
+                        <div class="cat-count">${c.nominee_count || 0} nominees</div>
+                        <div class="cat-actions">
+                            <button class="btn-admin btn-admin-sm" onclick="openCategoryModal(${c.id})"><i class="fas fa-edit"></i></button>
+                            <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteCategory(${c.id})"><i class="fas fa-trash"></i></button>
+                            <span class="badge-status ${c.is_active ? 'active' : 'draft'}">${c.is_active ? 'Active' : 'Inactive'}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                grid.innerHTML = `<div style="grid-column:1/-1;"><div class="empty-state"><i class="fas fa-tags"></i><h6>No Categories</h6><p>Add your first category to get started.</p></div></div>`;
+            }
+        })
+        .catch(() => {
+            document.getElementById('categoriesGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px;">Error loading categories</div>';
+        });
+}
+
+function openCategoryModal(id = null) {
+    const isEdit = !!id;
+    let category = { name: '', group: 'Entertainment', description: '', is_active: true };
+    
+    if (isEdit) {
+        fetch('/api/categories/')
+            .then(r => r.json())
+            .then(data => {
+                const found = (data.categories || []).find(c => c.id === id);
+                if (found) category = found;
+                showCategoryModal(isEdit, category, id);
+            })
+            .catch(() => showCategoryModal(isEdit, category, id));
+    } else {
+        showCategoryModal(isEdit, category, id);
+    }
+}
+
+function showCategoryModal(isEdit, category, id) {
+    const groups = ['Entertainment', 'Creative', 'Business', 'Leadership', 'Innovation', 'Social Impact'];
+    
+    const html = `
+        <div class="modal-overlay-custom open" id="categoryModal">
+            <div class="modal-box">
+                <div class="modal-head">
+                    <h5>${isEdit ? 'Edit' : 'Add'} Category</h5>
+                    <button class="close-btn" onclick="closeModal('categoryModal')"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="categoryForm">
+                    <div class="form-group">
+                        <label>Category Name</label>
+                        <input class="form-control-admin" id="catName" value="${category.name || ''}" placeholder="e.g. Music Personality of the Year" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Group</label>
+                        <select class="form-control-admin" id="catGroup">
+                            ${groups.map(g => `<option value="${g}" ${category.group === g ? 'selected' : ''}>${g}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control-admin" id="catDesc" rows="2" placeholder="Category description">${category.description || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="catActive" ${category.is_active !== false ? 'checked' : ''}> Active
+                        </label>
+                    </div>
+                    <div class="modal-foot">
+                        <button type="button" class="btn-admin" onclick="closeModal('categoryModal')">Cancel</button>
+                        <button type="submit" class="btn-admin btn-admin-primary">${isEdit ? 'Update' : 'Add'} Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    const existing = document.getElementById('categoryModal');
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', html);
+    
+    document.getElementById('categoryForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveCategory(isEdit, id);
+    });
+}
+
+function saveCategory(isEdit, id) {
+    const name = document.getElementById('catName').value.trim();
+    const group = document.getElementById('catGroup').value;
+    const description = document.getElementById('catDesc').value.trim();
+    const is_active = document.getElementById('catActive').checked;
+    
+    if (!name) {
+        showToast('Category name is required', 'error');
+        return;
+    }
+    
+    const data = { name, group, description, is_active };
+    
+    if (isEdit) {
+        data.id = id;
+        data.action = 'edit';
+    } else {
+        data.action = 'add';
+    }
+    
+    fetch('/api/categories/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+    })
+    .then(r => r.json())
+    .then(response => {
+        if (response.success) {
+            closeModal('categoryModal');
+            showToast(isEdit ? 'Category updated!' : 'Category added!');
+            loadCategories();
+            fetchStats();
+        } else {
+            showToast(response.message || 'Failed to save category', 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+function deleteCategory(id) {
+    if (!confirm('Delete this category? This will also remove associated nominees.')) return;
+    
+    fetch('/api/categories/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ action: 'delete', id: id })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Category deleted!');
+            loadCategories();
+            fetchStats();
+        } else {
+            showToast(data.message || 'Failed to delete', 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+// ============================================================
+// PARTNERS
+// ============================================================
+
+function renderPartners(area) {
+    area.innerHTML = `
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-handshake" style="color:var(--gold);margin-right:8px;"></i> Partners</h5>
+                <button class="btn-admin btn-admin-primary" onclick="openPartnerModal()"><i class="fas fa-plus"></i> Add Partner</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>Logo</th><th>Name</th><th>Type</th><th>Status</th><th>Actions</th></tr>
+                    <tbody id="partnersTableBody">
+                        <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    loadPartners();
+}
+
+function loadPartners() {
+    fetch('/api/partners/')
+        .then(r => r.json())
+        .then(data => {
+            const body = document.getElementById('partnersTableBody');
+            const partners = data.partners || [];
+            document.getElementById('partnerBadge').textContent = partners.length;
+            
+            if (partners.length) {
+                body.innerHTML = partners.map(p => `
+                    <tr>
+                        <td>
+                            ${p.logo_url ? `<img src="${p.logo_url}" alt="${p.name}" class="partner-logo-thumb">` : 
+                            `<div style="width:40px;height:40px;background:var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);"><i class="fas fa-building"></i></div>`}
+                        </td>
+                        <td><strong>${p.name}</strong></td>
+                        <td><span class="badge-status active">${p.type_display || p.type}</span></td>
+                        <td><span class="badge-status ${p.is_active ? 'active' : 'draft'}">${p.is_active ? 'Active' : 'Inactive'}</span></td>
+                        <td>
+                            <button class="btn-admin btn-admin-sm" onclick="openPartnerModal(${p.id})"><i class="fas fa-edit"></i></button>
+                            <button class="btn-admin btn-admin-sm" onclick="togglePartner(${p.id})"><i class="fas ${p.is_active ? 'fa-pause' : 'fa-play'}"></i></button>
+                            <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deletePartner(${p.id})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                body.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-handshake"></i><h6>No Partners</h6><p>Add your first partner to get started.</p></div></td></tr>`;
+            }
+        })
+        .catch(() => {
+            document.getElementById('partnersTableBody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Error loading partners</td></tr>';
+        });
+}
+
+function openPartnerModal(id = null) {
+    const isEdit = !!id;
+    let partner = { name: '', type: 'presenting', website: '', description: '' };
+    
+    if (isEdit) {
+        fetch('/api/partners/')
+            .then(r => r.json())
+            .then(data => {
+                const found = (data.partners || []).find(p => p.id === id);
+                if (found) partner = found;
+                showPartnerModal(isEdit, partner, id);
+            })
+            .catch(() => showPartnerModal(isEdit, partner, id));
+    } else {
+        showPartnerModal(isEdit, partner, id);
+    }
+}
+
+function showPartnerModal(isEdit, partner, id) {
+    const types = ['presenting', 'category', 'media', 'technology', 'community'];
+    const typeLabels = {
+        presenting: 'Presenting Partner',
+        category: 'Category Partner',
+        media: 'Media Partner',
+        technology: 'Technology Partner',
+        community: 'Community Partner'
+    };
+    
+    const html = `
+        <div class="modal-overlay-custom open" id="partnerModal">
+            <div class="modal-box">
+                <div class="modal-head">
+                    <h5>${isEdit ? 'Edit' : 'Add'} Partner</h5>
+                    <button class="close-btn" onclick="closeModal('partnerModal')"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="partnerForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Partner Name</label>
+                        <input class="form-control-admin" id="partnerName" value="${partner.name || ''}" placeholder="e.g. Media Partner" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select class="form-control-admin" id="partnerType">
+                            ${types.map(t => `<option value="${t}" ${partner.type === t ? 'selected' : ''}>${typeLabels[t]}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Website</label>
+                        <input class="form-control-admin" id="partnerWebsite" value="${partner.website || ''}" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control-admin" id="partnerDesc" rows="2" placeholder="Brief description">${partner.description || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Logo</label>
+                        ${isEdit && partner.logo_url ? `<img src="${partner.logo_url}" style="max-height:60px;display:block;margin-bottom:8px;">` : ''}
+                        <input type="file" class="form-control-admin" id="partnerLogo" accept="image/*">
+                        <div style="font-size:0.65rem;color:var(--muted);margin-top:4px;">${isEdit ? 'Upload new logo to replace current' : 'Upload partner logo'}</div>
+                    </div>
+                    <div class="modal-foot">
+                        <button type="button" class="btn-admin" onclick="closeModal('partnerModal')">Cancel</button>
+                        <button type="submit" class="btn-admin btn-admin-primary">${isEdit ? 'Update' : 'Add'} Partner</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    const existing = document.getElementById('partnerModal');
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', html);
+    
+    document.getElementById('partnerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        savePartner(isEdit, id);
+    });
+}
+
+function savePartner(isEdit, id) {
+    const name = document.getElementById('partnerName').value.trim();
+    const type = document.getElementById('partnerType').value;
+    const website = document.getElementById('partnerWebsite').value.trim();
+    const description = document.getElementById('partnerDesc').value.trim();
+    const logoFile = document.getElementById('partnerLogo').files[0];
+    
+    if (!name) {
+        showToast('Partner name is required', 'error');
+        return;
+    }
+    
+    const formData = new FormData();
+    
+    if (isEdit) {
+        formData.append('id', id);
+        formData.append('action', 'edit');
+    } else {
+        formData.append('action', 'add');
+    }
+    
+    formData.append('name', name);
+    formData.append('type', type);
+    formData.append('website', website);
+    formData.append('description', description);
+    
+    if (logoFile) {
+        formData.append('logo', logoFile);
+    }
+    
+    fetch('/api/partners/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(r => r.json())
+    .then(response => {
+        if (response.success) {
+            closeModal('partnerModal');
+            showToast(isEdit ? 'Partner updated!' : 'Partner added!');
+            loadPartners();
+            fetchPartners();
+            fetchStats();
+        } else {
+            showToast(response.message || 'Failed to save partner', 'error');
+        }
+    })
+    .catch(() => {
+        showToast('An error occurred', 'error');
+    });
+}
+
+function togglePartner(id) {
+    fetch('/api/partners/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ action: 'toggle', id: id })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast(`Partner ${data.is_active ? 'activated' : 'deactivated'}!`);
+            loadPartners();
+            fetchPartners();
+        } else {
+            showToast(data.message || 'Failed to toggle', 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+function deletePartner(id) {
+    if (!confirm('Delete this partner?')) return;
+    
+    fetch('/api/partners/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ action: 'delete', id: id })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Partner deleted!');
+            loadPartners();
+            fetchPartners();
+            fetchStats();
+        } else {
+            showToast(data.message || 'Failed to delete', 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+// ============================================================
+// NOMINEES
+// ============================================================
+
+function renderNominees(area) {
+    area.innerHTML = `
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-users" style="color:var(--gold);margin-right:8px;"></i> Nominees</h5>
+                <button class="btn-admin btn-admin-primary" onclick="openNomineeModal()"><i class="fas fa-plus"></i> Add Nominee</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>Photo</th><th>Name</th><th>Category</th><th>Group</th><th>Votes</th><th>Status</th><th>Actions</th></tr>
+                    <tbody id="nomineesTableBody">
+                        <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    loadNominees();
+}
+
+function loadNominees() {
+    fetch('/api/nominees/')
+        .then(r => r.json())
+        .then(data => {
+            const body = document.getElementById('nomineesTableBody');
+            const nominees = data.nominees || [];
+            document.getElementById('nomineeBadge').textContent = nominees.length;
+            
+            if (nominees.length) {
+                body.innerHTML = nominees.map(n => `
+                    <tr>
+                        <td>
+                            ${n.photo_url ? `<img src="${n.photo_url}" style="width:40px;height:40px;object-fit:cover;border-radius:50%;">` : 
+                            `<div style="width:40px;height:40px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--dark);font-size:16px;">${getAvatarLetter(n.name)}</div>`}
+                        </td>
+                        <td><strong>${n.name}</strong></td>
+                        <td>${n.category}</td>
+                        <td><span class="badge-status active">${n.group}</span></td>
+                        <td>${formatNumber(n.votes || 0)}</td>
+                        <td><span class="badge-status ${n.status}">${n.status}</span></td>
+                        <td>
+                            <button class="btn-admin btn-admin-sm" onclick="openNomineeModal(${n.id})"><i class="fas fa-edit"></i></button>
+                            <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteNominee(${n.id})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                body.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="fas fa-users"></i><h6>No Nominees</h6><p>Add your first nominee to get started.</p></div></td></tr>`;
+            }
+        })
+        .catch(() => {
+            document.getElementById('nomineesTableBody').innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Error loading nominees</td></tr>';
+        });
+}
+
+function openNomineeModal(id = null) {
+    const isEdit = !!id;
+    let nominee = { name: '', category: '', category_id: null, group: 'Creative', description: '', gender: 'other', status: 'active', votes: 0 };
+    
+    if (isEdit) {
+        fetch('/api/nominees/')
+            .then(r => r.json())
+            .then(data => {
+                const found = (data.nominees || []).find(n => n.id === id);
+                if (found) {
+                    nominee = found;
+                    fetchCategoriesForNominee(isEdit, nominee, id);
+                } else {
+                    fetchCategoriesForNominee(isEdit, nominee, id);
+                }
+            })
+            .catch(() => fetchCategoriesForNominee(isEdit, nominee, id));
+    } else {
+        fetchCategoriesForNominee(isEdit, nominee, id);
+    }
+}
+
+function fetchCategoriesForNominee(isEdit, nominee, id) {
+    fetch('/api/categories/')
+        .then(r => r.json())
+        .then(data => {
+            const categories = data.categories || [];
+            showNomineeModal(isEdit, nominee, id, categories);
+        })
+        .catch(() => showNomineeModal(isEdit, nominee, id, []));
+}
+
+function showNomineeModal(isEdit, nominee, id, categories) {
+    const groups = ['Entertainment', 'Creative', 'Business', 'Leadership', 'Innovation', 'Social Impact'];
+    const statuses = ['active', 'draft', 'completed', 'pending', 'rejected'];
+    
+    const html = `
+        <div class="modal-overlay-custom open" id="nomineeModal">
+            <div class="modal-box">
+                <div class="modal-head">
+                    <h5>${isEdit ? 'Edit' : 'Add'} Nominee</h5>
+                    <button class="close-btn" onclick="closeModal('nomineeModal')"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="nomineeForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input class="form-control-admin" id="nomineeName" value="${nominee.name || ''}" placeholder="e.g. John Doe" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select class="form-control-admin" id="nomineeCategory">
+                                ${categories.map(c => `<option value="${c.id}" ${nominee.category_id === c.id ? 'selected' : ''}>${c.name}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Group</label>
+                            <select class="form-control-admin" id="nomineeGroup">
+                                ${groups.map(g => `<option value="${g}" ${nominee.group === g ? 'selected' : ''}>${g}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Initial Votes</label>
+                            <input class="form-control-admin" id="nomineeVotes" type="number" value="${nominee.votes || 0}">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control-admin" id="nomineeStatus">
+                                ${statuses.map(s => `<option value="${s}" ${nominee.status === s ? 'selected' : ''}>${s.charAt(0).toUpperCase() + s.slice(1)}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control-admin" id="nomineeDesc" rows="2" placeholder="Brief description">${nominee.description || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Photo</label>
+                        ${isEdit && nominee.photo_url ? `<img src="${nominee.photo_url}" style="height:60px;width:60px;object-fit:cover;border-radius:50%;display:block;margin-bottom:8px;">` : ''}
+                        <input type="file" class="form-control-admin" id="nomineePhoto" accept="image/*">
+                        <div style="font-size:0.65rem;color:var(--muted);margin-top:4px;">${isEdit ? 'Upload new photo to replace current' : 'Upload nominee photo'}</div>
+                    </div>
+                    <div class="modal-foot">
+                        <button type="button" class="btn-admin" onclick="closeModal('nomineeModal')">Cancel</button>
+                        <button type="submit" class="btn-admin btn-admin-primary">${isEdit ? 'Update' : 'Add'} Nominee</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    const existing = document.getElementById('nomineeModal');
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', html);
+    
+    document.getElementById('nomineeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveNominee(isEdit, id);
+    });
+}
+
+function saveNominee(isEdit, id) {
+    const name = document.getElementById('nomineeName').value.trim();
+    const category_id = parseInt(document.getElementById('nomineeCategory').value);
+    const group = document.getElementById('nomineeGroup').value;
+    const votes = parseInt(document.getElementById('nomineeVotes').value) || 0;
+    const status = document.getElementById('nomineeStatus').value;
+    const description = document.getElementById('nomineeDesc').value.trim();
+    const photoFile = document.getElementById('nomineePhoto').files[0];
+    
+    if (!name) {
+        showToast('Nominee name is required', 'error');
+        return;
+    }
+    
+    const formData = new FormData();
+    
+    if (isEdit) {
+        formData.append('id', id);
+        formData.append('action', 'edit');
+    } else {
+        formData.append('action', 'add');
+    }
+    
+    formData.append('name', name);
+    formData.append('category_id', category_id);
+    formData.append('group', group);
+    formData.append('votes', votes);
+    formData.append('status', status);
+    formData.append('description', description);
+    
+    if (photoFile) {
+        formData.append('photo', photoFile);
+    }
+    
+    fetch('/api/nominees/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(r => r.json())
+    .then(response => {
+        if (response.success) {
+            closeModal('nomineeModal');
+            showToast(isEdit ? 'Nominee updated!' : 'Nominee added!');
+            loadNominees();
+            fetchStats();
+            fetchTopNominees();
+        } else {
+            showToast(response.message || 'Failed to save nominee', 'error');
+        }
+    })
+    .catch(() => {
+        showToast('An error occurred', 'error');
+    });
+}
+
+function deleteNominee(id) {
+    if (!confirm('Delete this nominee?')) return;
+    
+    fetch('/api/nominees/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ action: 'delete', id: id })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Nominee deleted!');
+            loadNominees();
+            fetchStats();
+            fetchTopNominees();
+        } else {
+            showToast(data.message || 'Failed to delete', 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+// ============================================================
+// GALLERY
+// ============================================================
+
+function renderGallery(area) {
+    area.innerHTML = `
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-images" style="color:var(--gold);margin-right:8px;"></i> Gallery</h5>
+                <button class="btn-admin btn-admin-primary" onclick="openGalleryUpload()"><i class="fas fa-plus"></i> Upload Image</button>
+            </div>
+            <div id="galleryGrid" class="grid-3">
+                <div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px;">Loading...</div>
+            </div>
+        </div>
+    `;
+    loadGallery();
+}
+
+function loadGallery() {
+    fetch('/api/gallery/')
+        .then(r => r.json())
+        .then(data => {
+            const grid = document.getElementById('galleryGrid');
+            const images = data.images || [];
+            document.getElementById('galleryBadge').textContent = images.length;
+            
+            if (images.length) {
+                grid.innerHTML = images.map(img => `
+                    <div style="border:1px solid var(--line);border-radius:8px;overflow:hidden;">
+                        <img src="${img.image_url}" alt="${img.title}" style="width:100%;height:160px;object-fit:cover;">
+                        <div style="padding:8px 12px;display:flex;justify-content:space-between;align-items:center;">
+                            <span style="font-size:0.75rem;font-weight:600;">${img.title}</span>
+                            <div>
+                                <button class="btn-admin btn-admin-sm" onclick="deleteGalleryImage(${img.id})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                grid.innerHTML = `<div style="grid-column:1/-1;"><div class="empty-state"><i class="fas fa-images"></i><h6>No Images</h6><p>Upload your first gallery image.</p></div></div>`;
+            }
+        })
+        .catch(() => {
+            document.getElementById('galleryGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:20px;">Error loading gallery</div>';
+        });
+}
+
+function openGalleryUpload() {
+    const html = `
+        <div class="modal-overlay-custom open" id="galleryModal">
+            <div class="modal-box">
+                <div class="modal-head">
+                    <h5>Upload Image</h5>
+                    <button class="close-btn" onclick="closeModal('galleryModal')"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="galleryForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input class="form-control-admin" id="galleryTitle" placeholder="Image title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control-admin" id="galleryDesc" rows="2" placeholder="Image description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Image File</label>
+                        <input type="file" class="form-control-admin" id="galleryImage" accept="image/*" required>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="galleryFeatured"> Featured
+                        </label>
+                    </div>
+                    <div class="modal-foot">
+                        <button type="button" class="btn-admin" onclick="closeModal('galleryModal')">Cancel</button>
+                        <button type="submit" class="btn-admin btn-admin-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    const existing = document.getElementById('galleryModal');
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', html);
+    
+    document.getElementById('galleryForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const title = document.getElementById('galleryTitle').value.trim();
+        const description = document.getElementById('galleryDesc').value.trim();
+        const featured = document.getElementById('galleryFeatured').checked;
+        const image = document.getElementById('galleryImage').files[0];
+        
+        if (!title || !image) {
+            showToast('Title and image are required', 'error');
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('featured', featured ? 'on' : '');
+        formData.append('image', image);
+        
+        fetch('/api/gallery/upload/', {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                closeModal('galleryModal');
+                showToast('Image uploaded!');
+                loadGallery();
+                fetchStats();
+            } else {
+                showToast(data.message || 'Upload failed', 'error');
+            }
+        })
+        .catch(() => showToast('An error occurred', 'error'));
+    });
+}
+
+function deleteGalleryImage(id) {
+    if (!confirm('Delete this image?')) return;
+    
+    fetch('/api/gallery/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ action: 'delete', id: id })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Image deleted!');
+            loadGallery();
+            fetchStats();
+        } else {
+            showToast(data.message || 'Failed to delete', 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+// ============================================================
+// NEWS
+// ============================================================
+
+function renderNews(area) {
+    area.innerHTML = `
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-newspaper" style="color:var(--gold);margin-right:8px;"></i> News Articles</h5>
+                <button class="btn-admin btn-admin-primary" onclick="openNewsModal()"><i class="fas fa-plus"></i> Add Article</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>Title</th><th>Tag</th><th>Date</th><th>Status</th><th>Actions</th></tr>
+                    <tbody id="newsTableBody">
+                        <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    loadNews();
+}
+
+function loadNews() {
+    fetch('/api/news/')
+        .then(r => r.json())
+        .then(data => {
+            const body = document.getElementById('newsTableBody');
+            const articles = data.articles || [];
+            document.getElementById('newsBadge').textContent = articles.length;
+            
+            if (articles.length) {
+                body.innerHTML = articles.map(n => `
+                    <tr>
+                        <td><strong>${n.title}</strong></td>
+                        <td><span class="badge-status active">${n.tag}</span></td>
+                        <td>${n.published_date || '—'}</td>
+                        <td><span class="badge-status ${n.published ? 'active' : 'draft'}">${n.published ? 'Published' : 'Draft'}</span></td>
+                        <td>
+                            <button class="btn-admin btn-admin-sm" onclick="openNewsModal(${n.id})"><i class="fas fa-edit"></i></button>
+                            <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteNews(${n.id})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                body.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-newspaper"></i><h6>No News Articles</h6><p>Add your first news article.</p></div></td></tr>`;
+            }
+        })
+        .catch(() => {
+            document.getElementById('newsTableBody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Error loading news</td></tr>';
+        });
+}
+
+function openNewsModal(id = null) {
+    const isEdit = !!id;
+    let article = { title: '', excerpt: '', content: '', tag: 'Announcement', published: true };
+    
+    if (isEdit) {
+        fetch('/api/news/')
+            .then(r => r.json())
+            .then(data => {
+                const found = (data.articles || []).find(a => a.id === id);
+                if (found) article = found;
+                showNewsModal(isEdit, article, id);
+            })
+            .catch(() => showNewsModal(isEdit, article, id));
+    } else {
+        showNewsModal(isEdit, article, id);
+    }
+}
+
+function showNewsModal(isEdit, article, id) {
+    const tags = ['Announcement', 'Voting', 'Academy', 'Event', 'Results'];
+    
+    const html = `
+        <div class="modal-overlay-custom open" id="newsModal">
+            <div class="modal-box">
+                <div class="modal-head">
+                    <h5>${isEdit ? 'Edit' : 'Add'} Article</h5>
+                    <button class="close-btn" onclick="closeModal('newsModal')"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="newsForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input class="form-control-admin" id="newsTitle" value="${article.title || ''}" placeholder="Article title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Excerpt</label>
+                        <textarea class="form-control-admin" id="newsExcerpt" rows="2" placeholder="Brief summary">${article.excerpt || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Content (Full article)</label>
+                        <textarea class="form-control-admin" id="newsContent" rows="4" placeholder="Full article content">${article.content || ''}</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tag</label>
+                            <select class="form-control-admin" id="newsTag">
+                                ${tags.map(t => `<option value="${t}" ${article.tag === t ? 'selected' : ''}>${t}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="newsPublished" ${article.published !== false ? 'checked' : ''}> Published
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Featured Image</label>
+                        ${isEdit && article.image_url ? `<img src="${article.image_url}" style="max-height:80px;display:block;margin-bottom:8px;">` : ''}
+                        <input type="file" class="form-control-admin" id="newsImage" accept="image/*">
+                        <div style="font-size:0.65rem;color:var(--muted);margin-top:4px;">${isEdit ? 'Upload new image to replace current' : 'Upload featured image'}</div>
+                    </div>
+                    <div class="modal-foot">
+                        <button type="button" class="btn-admin" onclick="closeModal('newsModal')">Cancel</button>
+                        <button type="submit" class="btn-admin btn-admin-primary">${isEdit ? 'Update' : 'Add'} Article</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    const existing = document.getElementById('newsModal');
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', html);
+    
+    document.getElementById('newsForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveNews(isEdit, id);
+    });
+}
+
+function saveNews(isEdit, id) {
+    const title = document.getElementById('newsTitle').value.trim();
+    const excerpt = document.getElementById('newsExcerpt').value.trim();
+    const content = document.getElementById('newsContent').value.trim();
+    const tag = document.getElementById('newsTag').value;
+    const published = document.getElementById('newsPublished').checked;
+    const imageFile = document.getElementById('newsImage').files[0];
+    
+    if (!title) {
+        showToast('Title is required', 'error');
+        return;
+    }
+    
+    const formData = new FormData();
+    
+    if (isEdit) {
+        formData.append('id', id);
+        formData.append('action', 'edit');
+    } else {
+        formData.append('action', 'add');
+    }
+    
+    formData.append('title', title);
+    formData.append('excerpt', excerpt);
+    formData.append('content', content);
+    formData.append('tag', tag);
+    formData.append('published', published);
+    
+    if (imageFile) {
+        formData.append('image', imageFile);
+    }
+    
+    fetch('/api/news/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(r => r.json())
+    .then(response => {
+        if (response.success) {
+            closeModal('newsModal');
+            showToast(isEdit ? 'Article updated!' : 'Article added!');
+            loadNews();
+            fetchStats();
+        } else {
+            showToast(response.message || 'Failed to save article', 'error');
+        }
+    })
+    .catch(() => {
+        showToast('An error occurred', 'error');
+    });
+}
+
+function deleteNews(id) {
+    if (!confirm('Delete this article?')) return;
+    
+    fetch('/api/news/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ action: 'delete', id: id })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Article deleted!');
+            loadNews();
+            fetchStats();
+        } else {
+            showToast(data.message || 'Failed to delete', 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+// ============================================================
+// HALL OF FAME
+// ============================================================
+
+function renderHallOfFame(area) {
+    area.innerHTML = `
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-trophy" style="color:var(--gold);margin-right:8px;"></i> Hall of Fame</h5>
+                <button class="btn-admin btn-admin-primary" onclick="openHOFModal()"><i class="fas fa-plus"></i> Add Entry</button>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>Photo</th><th>Name</th><th>Year</th><th>Category</th><th>Actions</th></tr>
+                    <tbody id="hofTableBody">
+                        <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    loadHallOfFame();
+}
+
+function loadHallOfFame() {
+    fetch('/api/hall-of-fame/')
+        .then(r => r.json())
+        .then(data => {
+            const body = document.getElementById('hofTableBody');
+            const entries = data.entries || [];
+            document.getElementById('hofBadge').textContent = entries.length;
+            
+            if (entries.length) {
+                body.innerHTML = entries.map(e => `
+                    <tr>
+                        <td>
+                            ${e.photo_url ? `<img src="${e.photo_url}" style="width:40px;height:40px;object-fit:cover;border-radius:50%;">` : 
+                            `<div style="width:40px;height:40px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--dark);font-size:16px;">${getAvatarLetter(e.name)}</div>`}
+                        </td>
+                        <td><strong>${e.name}</strong></td>
+                        <td>${e.year}</td>
+                        <td>${e.category}</td>
+                        <td>
+                            <button class="btn-admin btn-admin-sm" onclick="openHOFModal(${e.id})"><i class="fas fa-edit"></i></button>
+                            <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteHOFEntry(${e.id})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                body.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-trophy"></i><h6>No Hall of Fame Entries</h6><p>Add your first legend.</p></div></td></tr>`;
+            }
+        })
+        .catch(() => {
+            document.getElementById('hofTableBody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Error loading Hall of Fame</td></tr>';
+        });
+}
+
+function openHOFModal(id = null) {
+    const isEdit = !!id;
+    let entry = { name: '', year: new Date().getFullYear().toString(), category: '', description: '' };
+    
+    if (isEdit) {
+        fetch('/api/hall-of-fame/')
+            .then(r => r.json())
+            .then(data => {
+                const found = (data.entries || []).find(e => e.id === id);
+                if (found) entry = found;
+                showHOFModal(isEdit, entry, id);
+            })
+            .catch(() => showHOFModal(isEdit, entry, id));
+    } else {
+        showHOFModal(isEdit, entry, id);
+    }
+}
+
+function showHOFModal(isEdit, entry, id) {
+    const html = `
+        <div class="modal-overlay-custom open" id="hofModal">
+            <div class="modal-box">
+                <div class="modal-head">
+                    <h5>${isEdit ? 'Edit' : 'Add'} Hall of Fame Entry</h5>
+                    <button class="close-btn" onclick="closeModal('hofModal')"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="hofForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control-admin" id="hofName" value="${entry.name || ''}" placeholder="Winner name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Year</label>
+                            <input class="form-control-admin" id="hofYear" value="${entry.year || ''}" placeholder="e.g. 2026">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <input class="form-control-admin" id="hofCategory" value="${entry.category || ''}" placeholder="Category">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control-admin" id="hofDesc" rows="2" placeholder="Brief description">${entry.description || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Photo</label>
+                        ${isEdit && entry.photo_url ? `<img src="${entry.photo_url}" style="height:60px;width:60px;object-fit:cover;border-radius:50%;display:block;margin-bottom:8px;">` : ''}
+                        <input type="file" class="form-control-admin" id="hofPhoto" accept="image/*">
+                        <div style="font-size:0.65rem;color:var(--muted);margin-top:4px;">${isEdit ? 'Upload new photo to replace current' : 'Upload photo'}</div>
+                    </div>
+                    <div class="modal-foot">
+                        <button type="button" class="btn-admin" onclick="closeModal('hofModal')">Cancel</button>
+                        <button type="submit" class="btn-admin btn-admin-primary">${isEdit ? 'Update' : 'Add'} Entry</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    const existing = document.getElementById('hofModal');
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', html);
+    
+    document.getElementById('hofForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveHOFEntry(isEdit, id);
+    });
+}
+
+function saveHOFEntry(isEdit, id) {
+    const name = document.getElementById('hofName').value.trim();
+    const year = document.getElementById('hofYear').value.trim();
+    const category = document.getElementById('hofCategory').value.trim();
+    const description = document.getElementById('hofDesc').value.trim();
+    const photoFile = document.getElementById('hofPhoto').files[0];
+    
+    if (!name || !year || !category) {
+        showToast('Name, year, and category are required', 'error');
+        return;
+    }
+    
+    const formData = new FormData();
+    
+    if (isEdit) {
+        formData.append('id', id);
+        formData.append('action', 'edit');
+    } else {
+        formData.append('action', 'add');
+    }
+    
+    formData.append('name', name);
+    formData.append('year', year);
+    formData.append('category', category);
+    formData.append('description', description);
+    
+    if (photoFile) {
+        formData.append('photo', photoFile);
+    }
+    
+    fetch('/api/hall-of-fame/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData
+    })
+    .then(r => r.json())
+    .then(response => {
+        if (response.success) {
+            closeModal('hofModal');
+            showToast(isEdit ? 'Entry updated!' : 'Entry added!');
+            loadHallOfFame();
+        } else {
+            showToast(response.message || 'Failed to save entry', 'error');
+        }
+    })
+    .catch(() => {
+        showToast('An error occurred', 'error');
+    });
+}
+
+function deleteHOFEntry(id) {
+    if (!confirm('Delete this hall of fame entry?')) return;
+    
+    fetch('/api/hall-of-fame/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ action: 'delete', id: id })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Entry deleted!');
+            loadHallOfFame();
+        } else {
+            showToast(data.message || 'Failed to delete', 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+// ============================================================
+// VOTES
+// ============================================================
+
+function renderVotes(area) {
+    area.innerHTML = `
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+            <div class="stat-card">
+                <div class="stat-number" id="votesTotal">0</div>
+                <div class="stat-label">Total Votes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="votesToday">0</div>
+                <div class="stat-label">Votes Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="votesCategories">0</div>
+                <div class="stat-label">Categories</div>
+            </div>
+        </div>
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-list-ol" style="color:var(--gold);margin-right:8px;"></i> Recent Votes</h5>
+                <span class="sub">Latest 100 votes</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr><th>Nominee</th><th>Category</th><th>Phone</th><th>Amount</th><th>Date</th></tr>
+                    <tbody id="votesTableBody">
+                        <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    loadVotes();
+}
+
+function loadVotes() {
+    fetch('/api/votes/')
+        .then(r => r.json())
+        .then(data => {
+            const votes = data.votes || [];
+            const today = new Date().toISOString().split('T')[0];
+            const todayVotes = votes.filter(v => v.created_at && v.created_at.startsWith(today));
+            
+            document.getElementById('votesTotal').textContent = formatNumber(votes.length);
+            document.getElementById('votesToday').textContent = todayVotes.length;
+            
+            fetch('/api/categories/')
+                .then(r => r.json())
+                .then(catData => {
+                    document.getElementById('votesCategories').textContent = (catData.categories || []).length;
+                })
+                .catch(() => {});
+            
+            const body = document.getElementById('votesTableBody');
+            if (votes.length) {
+                body.innerHTML = votes.slice(0, 100).map(v => `
+                    <tr>
+                        <td><strong>${v.nominee}</strong></td>
+                        <td>${v.category}</td>
+                        <td>${v.voter_phone || '—'}</td>
+                        <td>KES ${v.amount || '10'}</td>
+                        <td>${v.created_at || '—'}</td>
+                    </tr>
+                `).join('');
+            } else {
+                body.innerHTML = `<tr><td colspan="5"><div class="empty-state"><i class="fas fa-vote-yea"></i><h6>No Votes Yet</h6><p>Votes will appear here once users start voting.</p></div></td></tr>`;
+            }
+        })
+        .catch(() => {
+            document.getElementById('votesTableBody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Error loading votes</td></tr>';
+        });
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+
+function renderSettings(area) {
+    area.innerHTML = `
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-cog" style="color:var(--gold);margin-right:8px;"></i> General Settings</h5>
+            </div>
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label>Site Name</label>
+                    <input class="form-control-admin" id="settingSiteName" placeholder="Site name">
+                </div>
+                <div class="form-group">
+                    <label>Tagline</label>
+                    <input class="form-control-admin" id="settingTagline" placeholder="Tagline">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="settingVotingOpen"> Voting Open
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="settingResultsLive"> Results Live
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Footer Text</label>
+                    <textarea class="form-control-admin" id="settingFooter" rows="3" placeholder="Footer text"></textarea>
+                </div>
+                <button type="submit" class="btn-admin btn-admin-primary"><i class="fas fa-save"></i> Save Settings</button>
+            </form>
+        </div>
+    `;
+    loadSettings();
+}
+
+function loadSettings() {
+    fetch('/api/settings/')
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('settingSiteName').value = data.site_name || '';
+                document.getElementById('settingTagline').value = data.tagline || '';
+                document.getElementById('settingVotingOpen').checked = data.voting_open || false;
+                document.getElementById('settingResultsLive').checked = data.results_live || false;
+                document.getElementById('settingFooter').value = data.footer_text || '';
+            }
+        })
+        .catch(() => {
+            showToast('Error loading settings', 'error');
+        });
+}
+
+document.addEventListener('submit', function(e) {
+    if (e.target.id === 'settingsForm') {
+        e.preventDefault();
+        saveSettings();
+    }
+});
+
+function saveSettings() {
+    const data = {
+        site_name: document.getElementById('settingSiteName').value.trim(),
+        tagline: document.getElementById('settingTagline').value.trim(),
+        voting_open: document.getElementById('settingVotingOpen').checked,
+        results_live: document.getElementById('settingResultsLive').checked,
+        footer_text: document.getElementById('settingFooter').value.trim()
+    };
+    
+    fetch('/api/settings/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+    })
+    .then(r => r.json())
+    .then(response => {
+        if (response.success) {
+            showToast('Settings saved!');
+        } else {
+            showToast(response.message || 'Failed to save settings', 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+// ============================================================
+// COUNTDOWN
+// ============================================================
+
+function renderCountdown(area) {
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
+    
+    area.innerHTML = `
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-clock" style="color:var(--gold);margin-right:8px;"></i> Countdown Settings</h5>
+            </div>
+            <form id="countdownForm">
+                <div class="form-group">
+                    <label>Event Date & Time</label>
+                    <input class="form-control-admin" id="countdownDate" type="datetime-local">
+                </div>
+                <div class="form-group">
+                    <label>Label</label>
+                    <input class="form-control-admin" id="countdownLabel" placeholder="e.g. The Night Begins In">
+                </div>
+                <div style="padding:16px;background:var(--bg);border-radius:8px;margin:12px 0;text-align:center;border:1px solid var(--line);">
+                    <div style="font-size:2rem;font-weight:700;font-family:var(--font-display);color:var(--green);" id="countdownPreview">Loading...</div>
+                    <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;" id="countdownLabelPreview"></div>
+                </div>
+                <button type="submit" class="btn-admin btn-admin-primary"><i class="fas fa-save"></i> Save Countdown</button>
+            </form>
+        </div>
+    `;
+    loadCountdown();
+}
+
+function loadCountdown() {
+    fetch('/api/countdown/')
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                if (data.countdown_date) {
+                    const date = new Date(data.countdown_date);
+                    const formatted = date.toISOString().slice(0, 16);
+                    document.getElementById('countdownDate').value = formatted;
+                }
+                document.getElementById('countdownLabel').value = data.countdown_label || 'The Night Begins In';
+                document.getElementById('countdownLabelPreview').textContent = data.countdown_label || 'The Night Begins In';
+                
+                if (countdownInterval) clearInterval(countdownInterval);
+                countdownInterval = setInterval(updateCountdownPreview, 1000);
+                updateCountdownPreview();
+            } else {
+                showToast('Error loading countdown', 'error');
+            }
+        })
+        .catch(() => {
+            showToast('Error loading countdown', 'error');
+            document.getElementById('countdownPreview').textContent = '⚠️ Error loading';
+        });
+}
+
+function updateCountdownPreview() {
+    const dateInput = document.getElementById('countdownDate');
+    const preview = document.getElementById('countdownPreview');
+    const labelPreview = document.getElementById('countdownLabelPreview');
+    
+    if (!dateInput || !dateInput.value) {
+        preview.textContent = '⏰ Set a date above';
+        return;
+    }
+    
+    const target = new Date(dateInput.value).getTime();
+    const now = Date.now();
+    const diff = target - now;
+    
+    if (diff <= 0) {
+        preview.textContent = '🎉 The Night Is Here!';
+        return;
+    }
+    
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    
+    preview.textContent = `${d}d ${h}h ${m}m ${s}s`;
+    
+    const label = document.getElementById('countdownLabel');
+    if (labelPreview && label) {
+        labelPreview.textContent = label.value || 'The Night Begins In';
+    }
+}
+
+document.addEventListener('submit', function(e) {
+    if (e.target.id === 'countdownForm') {
+        e.preventDefault();
+        saveCountdown();
+    }
+});
+
+function saveCountdown() {
+    const date = document.getElementById('countdownDate').value;
+    const label = document.getElementById('countdownLabel').value.trim();
+    
+    if (!date) {
+        showToast('Please select a date and time', 'error');
+        return;
+    }
+    
+    const data = {
+        countdown_date: date + ':00',
+        countdown_label: label || 'The Night Begins In'
+    };
+    
+    fetch('/api/countdown/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+    })
+    .then(r => r.json())
+    .then(response => {
+        if (response.success) {
+            showToast('Countdown updated!');
+            document.getElementById('countdownLabelPreview').textContent = data.countdown_label;
+            updateCountdownPreview();
+        } else {
+            showToast(response.message || 'Failed to update countdown', 'error');
+        }
+    })
+    .catch(() => {
+        showToast('An error occurred', 'error');
+    });
+}
+
+// ============================================================
+// USER NOMINATIONS
+// ============================================================
+
+function renderUserNominations(area) {
+    area.innerHTML = `
+        <div class="card-custom">
+            <div class="card-header-custom">
+                <h5><i class="fas fa-user-plus" style="color:var(--gold);margin-right:8px;"></i> User Nominations</h5>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button class="btn-admin btn-admin-sm active" data-filter="all" onclick="filterNominations('all')">All</button>
+                    <button class="btn-admin btn-admin-sm" data-filter="pending" onclick="filterNominations('pending')">Pending</button>
+                    <button class="btn-admin btn-admin-sm" data-filter="approved" onclick="filterNominations('approved')">Approved</button>
+                    <button class="btn-admin btn-admin-sm" data-filter="rejected" onclick="filterNominations('rejected')">Rejected</button>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <tr>
+                        <th>#</th>
+                        <th>Nominee</th>
+                        <th>Category</th>
+                        <th>Nominated By</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tbody id="nominationsTableBody">
+                        <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+    loadUserNominations();
+}
+
+let currentNominationFilter = 'all';
+
+function filterNominations(status) {
+    currentNominationFilter = status;
+    document.querySelectorAll('[data-filter]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === status);
+    });
+    loadUserNominations();
+}
+
+function loadUserNominations() {
+    const url = currentNominationFilter === 'all' 
+        ? '/api/user-nominations/' 
+        : '/api/user-nominations/?status=' + currentNominationFilter;
+    
+    fetch(url)
+        .then(r => r.json())
+        .then(data => {
+            const body = document.getElementById('nominationsTableBody');
+            const nominations = data.nominations || [];
+            document.getElementById('nominationBadge').textContent = nominations.filter(n => n.status === 'pending').length;
+            
+            if (nominations.length) {
+                body.innerHTML = nominations.map((n, i) => `
+                    <tr>
+                        <td>#${i+1}</td>
+                        <td>
+                            <strong>${n.nominee_name}</strong>
+                            ${n.approved_nominee_name ? `<br><span style="font-size:0.65rem;color:var(--green);">→ ${n.approved_nominee_name}</span>` : ''}
+                        </td>
+                        <td>${n.category}</td>
+                        <td>
+                            <div>${n.nominator_name}</div>
+                            <div style="font-size:0.65rem;color:var(--muted);">${n.nominator_email}</div>
+                            ${n.nominator_phone ? `<div style="font-size:0.65rem;color:var(--muted);">${n.nominator_phone}</div>` : ''}
+                        </td>
+                        <td>
+                            <span class="badge-status ${n.status}">${n.status.charAt(0).toUpperCase() + n.status.slice(1)}</span>
+                            ${n.admin_notes ? `<br><span style="font-size:0.6rem;color:var(--muted);">${n.admin_notes}</span>` : ''}
+                        </td>
+                        <td style="font-size:0.75rem;">${n.created_at}</td>
+                        <td>
+                            ${n.status === 'pending' ? `
+                                <button class="btn-admin btn-admin-sm btn-admin-success" onclick="approveNomination(${n.id})"><i class="fas fa-check"></i></button>
+                                <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="rejectNomination(${n.id})"><i class="fas fa-times"></i></button>
+                            ` : `
+                                <button class="btn-admin btn-admin-sm" onclick="viewNominationDetails(${n.id})"><i class="fas fa-eye"></i></button>
+                                <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteNomination(${n.id})"><i class="fas fa-trash"></i></button>
+                            `}
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                body.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="fas fa-user-plus"></i><h6>No Nominations</h6><p>${currentNominationFilter === 'all' ? 'No nominations have been submitted yet.' : 'No ' + currentNominationFilter + ' nominations found.'}</p></div></td></tr>`;
+            }
+        })
+        .catch(() => {
+            document.getElementById('nominationsTableBody').innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Error loading nominations</td></tr>';
+        });
+}
+
+function approveNomination(id) {
+    const notes = prompt('Add any notes for this approval (optional):');
+    if (notes === null) return;
+    
+    fetch('/api/user-nominations/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            action: 'approve',
+            id: id,
+            admin_notes: notes || ''
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast('✅ ' + data.message);
+            loadUserNominations();
+            fetchStats();
+        } else {
+            showToast('❌ ' + data.message, 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+function rejectNomination(id) {
+    const notes = prompt('Add notes for rejection (optional):');
+    if (notes === null) return;
+    
+    fetch('/api/user-nominations/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            action: 'reject',
+            id: id,
+            admin_notes: notes || ''
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast('✅ ' + data.message);
+            loadUserNominations();
+            fetchStats();
+        } else {
+            showToast('❌ ' + data.message, 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+function deleteNomination(id) {
+    if (!confirm('Delete this nomination?')) return;
+    
+    fetch('/api/user-nominations/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            action: 'delete',
+            id: id
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast('✅ ' + data.message);
+            loadUserNominations();
+            fetchStats();
+        } else {
+            showToast('❌ ' + data.message, 'error');
+        }
+    })
+    .catch(() => showToast('An error occurred', 'error'));
+}
+
+function viewNominationDetails(id) {
+    fetch('/api/user-nominations/')
+        .then(r => r.json())
+        .then(data => {
+            const nom = (data.nominations || []).find(n => n.id === id);
+            if (!nom) {
+                showToast('Nomination not found', 'error');
+                return;
+            }
+            
+            const html = `
+                <div class="modal-overlay-custom open" id="nominationDetailModal">
+                    <div class="modal-box">
+                        <div class="modal-head">
+                            <h5>Nomination Details</h5>
+                            <button class="close-btn" onclick="closeModal('nominationDetailModal')"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <strong style="font-size:0.65rem;text-transform:uppercase;color:var(--muted);">Nominee</strong>
+                            <div style="font-size:1.1rem;font-weight:700;">${nom.nominee_name}</div>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <strong style="font-size:0.65rem;text-transform:uppercase;color:var(--muted);">Category</strong>
+                            <div>${nom.category}</div>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <strong style="font-size:0.65rem;text-transform:uppercase;color:var(--muted);">Description</strong>
+                            <div style="background:#f4f7f6;padding:10px;border-radius:6px;">${nom.description}</div>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <strong style="font-size:0.65rem;text-transform:uppercase;color:var(--muted);">Nominated By</strong>
+                            <div><strong>${nom.nominator_name}</strong></div>
+                            <div style="color:var(--muted);">${nom.nominator_email}</div>
+                            ${nom.nominator_phone ? `<div style="color:var(--muted);">${nom.nominator_phone}</div>` : ''}
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <strong style="font-size:0.65rem;text-transform:uppercase;color:var(--muted);">Status</strong>
+                            <div><span class="badge-status ${nom.status}">${nom.status.charAt(0).toUpperCase() + nom.status.slice(1)}</span></div>
+                        </div>
+                        ${nom.admin_notes ? `
+                        <div style="margin-bottom:12px;">
+                            <strong style="font-size:0.65rem;text-transform:uppercase;color:var(--muted);">Admin Notes</strong>
+                            <div style="background:#fff3e0;padding:10px;border-radius:6px;">${nom.admin_notes}</div>
+                        </div>
+                        ` : ''}
+                        <div class="modal-foot">
+                            <button type="button" class="btn-admin" onclick="closeModal('nominationDetailModal')">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const existing = document.getElementById('nominationDetailModal');
+            if (existing) existing.remove();
+            document.body.insertAdjacentHTML('beforeend', html);
+        })
+        .catch(() => showToast('Error loading details', 'error'));
+}
+
+// ============================================================
+// MODAL UTILITY
+// ============================================================
+
+function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.classList.remove('open');
+        setTimeout(() => modal.remove(), 300);
+    }
+}
+
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay-custom')) {
+        e.target.classList.remove('open');
+        setTimeout(() => e.target.remove(), 300);
+    }
+});
+
+// ============================================================
+// INIT
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    checkLoginStatus();
+    navigate('dashboard');
+});
+
+console.log('✅ Pinnacle Excellence Awards Admin Panel loaded.');
+</script>
+</body>
+</html>

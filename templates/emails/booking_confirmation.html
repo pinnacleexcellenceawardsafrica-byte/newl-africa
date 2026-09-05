@@ -1,0 +1,69 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}Booking Confirmation - Mwasamwanda Well-being Services{% endblock %}
+
+{% block content %}
+<div class="content-section">
+    <h2 class="content-title">🎉 Your Appointment is Confirmed!</h2>
+    
+    <p>Dear <strong>{{ booking.full_name }}</strong>,</p>
+    
+    <p>Thank you for choosing Mwasamwanda Well-being Services! We're honored to be part of your wellness journey. Your booking request has been received and we're excited to help you enhance your normative development and mental health.</p>
+    
+    <div class="highlight-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📋 Appointment Details</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Service</div>
+                <div class="info-value">{{ booking.get_service_type_display }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Session Mode</div>
+                <div class="info-value">{{ booking.get_session_mode_display }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Date</div>
+                <div class="info-value">{{ booking.preferred_date|date:"F d, Y" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Time</div>
+                <div class="info-value">{{ booking.preferred_time|time:"g:i A" }}</div>
+            </div>
+        </div>
+    </div>
+    
+    {% if booking.description %}
+    <div class="highlight-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📝 Your Concern</h3>
+        <p style="font-style: italic;">"{{ booking.description }}"</p>
+    </div>
+    {% endif %}
+    
+    <h3 style="color: #2c5aa0; margin: 30px 0 15px;">📞 Next Steps</h3>
+    
+    <ol style="margin-left: 20px; margin-bottom: 25px;">
+        <li style="margin-bottom: 10px;"><strong>Our team will contact you</strong> within 24 hours to confirm your appointment details</li>
+        <li style="margin-bottom: 10px;"><strong>Prepare any relevant information</strong> you'd like to discuss during your session</li>
+        <li><strong>For {{ booking.get_session_mode_display }} sessions</strong>, you'll receive access instructions prior to your appointment</li>
+    </ol>
+    
+    <div class="highlight-box">
+        <h3 style="color: #2c5aa0; margin-bottom: 15px;">📍 Important Information</h3>
+        <ul style="margin-left: 20px;">
+            <li style="margin-bottom: 8px;">Please arrive 10 minutes before your scheduled time</li>
+            <li style="margin-bottom: 8px;">Bring any relevant documents or notes</li>
+            <li style="margin-bottom: 8px;">If you need to reschedule, please contact us at least 24 hours in advance</li>
+            <li>All sessions are confidential and conducted by professional psychologists</li>
+        </ul>
+    </div>
+    
+    <p style="margin: 25px 0;">We're committed to providing you with the highest quality psychological interventions to enhance your normative development and mental health.</p>
+    
+    <a href="https://yourwebsite.com/booking" class="cta-button">View Your Booking Details</a>
+    
+    <p style="margin-top: 30px; color: #666; font-size: 14px;">
+        <strong>Need to make changes?</strong><br>
+        Contact us at <strong>0758283613</strong> or reply to this email.
+    </p>
+</div>
+{% endblock %}

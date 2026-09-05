@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pinnacle Excellence Awards — Admin Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --dark: #0F1A14;
+      --green-deep: #1A3327;
+      --green: #2B6E4B;
+      --green-bright: #2EB872;
+      --gold: #F5C842;
+      --gold-soft: #FFE57A;
+      --ivory: #FFFFFF;
+      --white: #FFFFFF;
+      --ink: #0F1A14;
+      --muted: #5C6A62;
+      --line: rgba(0,0,0,.09);
+      --line-light: rgba(255,255,255,.14);
+      --font-display: 'Quicksand', sans-serif;
+      --font-body: 'Quicksand', sans-serif;
+      --sidebar-width: 260px;
+      --header-height: 70px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: #f4f7f6;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--dark);
+      color: var(--ivory);
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+      padding: 0 0 20px 0;
+    }
+
+    .sidebar-brand {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--line-light);
+    }
+
+    .sidebar-brand .brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--ivory);
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-brand .brand span {
+      color: var(--gold);
+    }
+
+    .sidebar-brand .sub {
+      display: block;
+      font-size: 0.45rem;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      color: #6C7B72;
+      margin-top: -2px;
+    }
+
+    .sidebar-brand .badge-admin {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.55rem;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      padding: 16px 12px 0;
+    }
+
+    .sidebar-nav .nav-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6C7B72;
+      font-weight: 600;
+      padding: 12px 12px 6px;
+    }
+
+    .sidebar-nav .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: #9FB1A8;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      margin-bottom: 2px;
+    }
+
+    .sidebar-nav .nav-item:hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--ivory);
+    }
+
+    .sidebar-nav .nav-item.active {
+      background: rgba(46,184,114,0.15);
+      color: var(--green-bright);
+    }
+
+    .sidebar-nav .nav-item i {
+      width: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .sidebar-nav .nav-item .badge-count {
+      margin-left: auto;
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.6rem;
+      padding: 1px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    .sidebar-user {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 20px;
+      border-top: 1px solid var(--line-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-user .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .sidebar-user .info .name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ivory);
+    }
+
+    .sidebar-user .info .role {
+      font-size: 0.65rem;
+      color: #6C7B72;
+    }
+
+    .sidebar-user .logout-btn {
+      margin-left: auto;
+      background: transparent;
+      border: 1px solid var(--line-light);
+      color: #9FB1A8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-user .logout-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--white);
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .header .page-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .header .page-title small {
+      font-weight: 400;
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: block;
+    }
+
+    .header .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header .header-actions .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 6px 16px;
+      gap: 8px;
+    }
+
+    .header .header-actions .search-box input {
+      border: none;
+      background: transparent;
+      font-size: 0.8rem;
+      outline: none;
+      width: 160px;
+      font-family: var(--font-body);
+    }
+
+    .header .header-actions .search-box input::placeholder {
+      color: var(--text-light);
+    }
+
+    .header .header-actions .btn-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .header .header-actions .btn-icon:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--bg);
+    }
+
+    .header .header-actions .btn-icon .notif-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+
+    .header .header-actions .btn-icon {
+      position: relative;
+    }
+
+    .hamburger {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    /* CONTENT AREA */
+    .content-area {
+      padding: 24px 32px 40px;
+    }
+
+    /* STATS CARDS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      transition: all 0.2s ease;
+    }
+
+    .stat-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+
+    .stat-card .stat-icon {
+      font-size: 1.5rem;
+      color: var(--green);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .stat-card .stat-number {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .stat-card .stat-change {
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .stat-card .stat-change.up {
+      color: var(--green-bright);
+    }
+
+    .stat-card .stat-change.down {
+      color: #dc3545;
+    }
+
+    /* CARDS */
+    .card-custom {
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .card-custom .card-header-custom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-custom .card-header-custom h5 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .card-custom .card-header-custom .sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* TABLE */
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 12px;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--line);
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(46,184,114,0.03);
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-status.active {
+      background: #e6f4ec;
+      color: var(--green);
+    }
+
+    .badge-status.completed {
+      background: #e3f0ff;
+      color: #1a6dff;
+    }
+
+    .badge-status.pending {
+      background: #fff3e0;
+      color: #e67e22;
+    }
+
+    .badge-status.draft {
+      background: var(--bg);
+      color: var(--muted);
+    }
+
+    /* BUTTONS */
+    .btn-admin {
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border: 1px solid var(--line);
+      background: var(--white);
+      color: var(--ink);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-admin:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .btn-admin-primary {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--white);
+    }
+
+    .btn-admin-primary:hover {
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+      color: var(--white);
+    }
+
+    .btn-admin-gold {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--dark);
+    }
+
+    .btn-admin-gold:hover {
+      background: var(--gold-soft);
+      border-color: var(--gold-soft);
+      color: var(--dark);
+    }
+
+    .btn-admin-danger {
+      color: #dc3545;
+      border-color: #f5c6cb;
+    }
+
+    .btn-admin-danger:hover {
+      background: #f8d7da;
+      border-color: #dc3545;
+    }
+
+    .btn-admin-sm {
+      padding: 4px 12px;
+      font-size: 0.6rem;
+    }
+
+    /* FORM ELEMENTS */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .form-control-admin {
+      width: 100%;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      background: var(--white);
+      color: var(--ink);
+    }
+
+    .form-control-admin:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(46,184,114,0.12);
+    }
+
+    .form-control-admin::placeholder {
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* TABS */
+    .admin-tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .admin-tabs .tab {
+      padding: 8px 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .admin-tabs .tab:hover {
+      color: var(--ink);
+    }
+
+    .admin-tabs .tab.active {
+      color: var(--green);
+      border-bottom-color: var(--green);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* UPLOAD ZONE */
+    .upload-zone {
+      border: 2px dashed var(--line);
+      border-radius: 12px;
+      padding: 40px 20px;
+      text-align: center;
+      background: #fafcfa;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .upload-zone:hover {
+      border-color: var(--green);
+      background: var(--bg);
+    }
+
+    .upload-zone .icon {
+      font-size: 2.5rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .upload-zone h6 {
+      font-weight: 600;
+      font-size: 0.9rem;
+      font-family: var(--font-display);
+    }
+
+    .upload-zone p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    /* GRID */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* LEADERBOARD */
+    .leader-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .leader-item:last-child {
+      border-bottom: none;
+    }
+
+    .leader-item .rank {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gold);
+      width: 28px;
+      text-align: center;
+    }
+
+    .leader-item .avatar-sm {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .leader-item .info {
+      flex: 1;
+    }
+
+    .leader-item .info .name {
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .leader-item .info .category {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .leader-item .votes {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--green);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:992px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .hamburger {
+        display: block;
+      }
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .header {
+        padding: 12px 16px;
+      }
+      .content-area {
+        padding: 16px;
+      }
+    }
+
+    @media(max-width:576px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .header .header-actions .search-box {
+        display: none;
+      }
+      .header .page-title {
+        font-size: 0.95rem;
+      }
+    }
+
+    /* SIDEBAR OVERLAY */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 999;
+    }
+
+    .sidebar-overlay.open {
+      display: block;
+    }
+
+    /* CHART WRAPPER */
+    .chart-wrapper {
+      height: 250px;
+      position: relative;
+    }
+
+    /* MISC */
+    .text-muted-small {
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .gap-2 {
+      gap: 8px;
+    }
+    .gap-3 {
+      gap: 12px;
+    }
+
+    .mt-2 {
+      margin-top: 8px;
+    }
+    .mt-3 {
+      margin-top: 12px;
+    }
+    .mt-4 {
+      margin-top: 16px;
+    }
+    .mb-2 {
+      margin-bottom: 8px;
+    }
+    .mb-3 {
+      margin-bottom: 12px;
+    }
+    .mb-4 {
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand">PINNACLE <span>EXCELLENCE</span><span class="sub">AWARDS AFRICA</span></div>
+    <span class="badge-admin"><i class="fas fa-shield-alt"></i> Admin Panel</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Main</div>
+    <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+      <i class="fas fa-home"></i> Dashboard
+    </a>
+    <a class="nav-item" data-page="votes" onclick="navigate('votes')">
+      <i class="fas fa-vote-yea"></i> Votes & Standings
+      <span class="badge-count">24</span>
+    </a>
+    <a class="nav-item" data-page="nominees" onclick="navigate('nominees')">
+      <i class="fas fa-users"></i> Nominees
+      <span class="badge-count">150</span>
+    </a>
+    <a class="nav-item" data-page="categories" onclick="navigate('categories')">
+      <i class="fas fa-tags"></i> Categories
+      <span class="badge-count">24</span>
+    </a>
+
+    <div class="nav-label" style="margin-top:12px;">Content</div>
+    <a class="nav-item" data-page="gallery" onclick="navigate('gallery')">
+      <i class="fas fa-images"></i> Gallery
+    </a>
+    <a class="nav-item" data-page="news" onclick="navigate('news')">
+      <i class="fas fa-newspaper"></i> Newsroom
+      <span class="badge-count">3</span>
+    </a>
+    <a class="nav-item" data-page="hall-of-fame" onclick="navigate('hall-of-fame')">
+      <i class="fas fa-trophy"></i> Hall of Fame
+    </a>
+    <a class="nav-item" data-page="partners" onclick="navigate('partners')">
+      <i class="fas fa-handshake"></i> Partners
+    </a>
+
+    <div class="nav-label" style="margin-top:12px;">Settings</div>
+    <a class="nav-item" data-page="settings" onclick="navigate('settings')">
+      <i class="fas fa-cog"></i> Settings
+    </a>
+    <a class="nav-item" data-page="countdown" onclick="navigate('countdown')">
+      <i class="fas fa-clock"></i> Countdown
+    </a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="avatar">A</div>
+    <div class="info">
+      <div class="name">Admin User</div>
+      <div class="role">Administrator</div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Sign Out</button>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+  <!-- HEADER -->
+  <header class="header">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      <div class="page-title">
+        Dashboard
+        <small>Pinnacle Excellence Awards · Admin Panel</small>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="search-box">
+        <i class="fas fa-search" style="color:var(--muted);font-size:0.75rem;"></i>
+        <input type="text" placeholder="Search..." id="globalSearch">
+      </div>
+      <button class="btn-icon" title="Notifications">
+        <i class="fas fa-bell"></i>
+        <span class="notif-dot"></span>
+      </button>
+      <button class="btn-icon" title="Refresh" onclick="location.reload()">
+        <i class="fas fa-sync"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENT AREA -->
+  <div class="content-area" id="contentArea">
+    <!-- Pages rendered by JS -->
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ============================================================
+// DATA STORE
+// ============================================================
+
+const AppData = {
+  // Dashboard stats
+  stats: {
+    totalVotes: 2847,
+    totalNominees: 150,
+    totalCategories: 24,
+    liveNow: 1,
+    votesToday: 342,
+    votesChange: 12.5,
+    completion: 68
+  },
+
+  // Leaderboard
+  leaders: [
+    { name: "Amina Njeri", category: "Creative Personality of the Year", votes: 410, avatar: "AN" },
+    { name: "Nia Wambui", category: "Music Personality of the Year", votes: 380, avatar: "NW" },
+    { name: "David Kamau", category: "Entrepreneur of the Year", votes: 355, avatar: "DK" },
+    { name: "Samuel Mwangi", category: "Content Creator of the Year", votes: 330, avatar: "SM" },
+    { name: "Grace Achieng", category: "Business Leader of the Year", votes: 300, avatar: "GA" },
+    { name: "Faith Chebet", category: "Young Leader of the Year", votes: 260, avatar: "FC" },
+    { name: "Peter Kiptoo", category: "Comedian of the Year", votes: 250, avatar: "PK" },
+    { name: "Brian Otieno", category: "Innovator of the Year", votes: 195, avatar: "BO" }
+  ],
+
+  // Category standings
+  categoryStandings: [
+    { category: "Music Personality of the Year", leader: "Nia Wambui", votes: 380, total: 620 },
+    { category: "Creative Personality of the Year", leader: "Amina Njeri", votes: 410, total: 780 },
+    { category: "Entrepreneur of the Year", leader: "David Kamau", votes: 355, total: 590 },
+    { category: "Content Creator of the Year", leader: "Samuel Mwangi", votes: 330, total: 510 },
+    { category: "Business Leader of the Year", leader: "Grace Achieng", votes: 300, total: 470 },
+    { category: "Young Leader of the Year", leader: "Faith Chebet", votes: 260, total: 420 },
+    { category: "Comedian of the Year", leader: "Peter Kiptoo", votes: 250, total: 390 },
+    { category: "Innovator of the Year", leader: "Brian Otieno", votes: 195, total: 310 }
+  ],
+
+  // Nominees (editable)
+  nominees: [
+    { id: 1, name: "Amina Njeri", category: "Creative Personality of the Year", group: "Creative", votes: 410, status: "active" },
+    { id: 2, name: "David Kamau", category: "Entrepreneur of the Year", group: "Business", votes: 355, status: "active" },
+    { id: 3, name: "Nia Wambui", category: "Music Personality of the Year", group: "Entertainment", votes: 380, status: "active" },
+    { id: 4, name: "Brian Otieno", category: "Innovator of the Year", group: "Innovation", votes: 195, status: "active" },
+    { id: 5, name: "Faith Chebet", category: "Young Leader of the Year", group: "Leadership", votes: 260, status: "active" },
+    { id: 6, name: "Samuel Mwangi", category: "Content Creator of the Year", group: "Creative", votes: 330, status: "active" },
+    { id: 7, name: "Grace Achieng", category: "Business Leader of the Year", group: "Business", votes: 300, status: "active" },
+    { id: 8, name: "Peter Kiptoo", category: "Comedian of the Year", group: "Entertainment", votes: 250, status: "active" }
+  ],
+
+  // Categories
+  categories: [
+    { id: 1, name: "Music Personality of the Year", group: "Entertainment", desc: "Recognising outstanding contribution to music this year.", nominees: 3 },
+    { id: 2, name: "Actor of the Year", group: "Entertainment", desc: "Celebrating standout performance on screen or stage.", nominees: 2 },
+    { id: 3, name: "Content Creator of the Year", group: "Creative", desc: "Recognising digital storytelling and influence.", nominees: 4 },
+    { id: 4, name: "Creative Personality of the Year", group: "Creative", desc: "For bold, original creative work.", nominees: 3 },
+    { id: 5, name: "Entrepreneur of the Year", group: "Business", desc: "For vision and execution in building something new.", nominees: 4 },
+    { id: 6, name: "Business Leader of the Year", group: "Business", desc: "Recognising leadership at scale.", nominees: 2 },
+    { id: 7, name: "Young Leader of the Year", group: "Leadership", desc: "Recognising leadership before thirty.", nominees: 3 },
+    { id: 8, name: "Innovator of the Year", group: "Innovation", desc: "For an idea that changed how things are done.", nominees: 2 }
+  ],
+
+  // Gallery images
+  gallery: [
+    { id: 1, title: "Awards Night 2025", url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&q=80" },
+    { id: 2, title: "Red Carpet Moments", url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&q=80" },
+    { id: 3, title: "Celebration", url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80" },
+    { id: 4, title: "The Stage", url: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&q=80" }
+  ],
+
+  // News articles
+  news: [
+    { id: 1, title: "Nominees Revealed for 2026", excerpt: "Meet the names competing for this year's biggest honours.", tag: "Announcement", date: "2026-01-15" },
+    { id: 2, title: "Voting Is Now Open", excerpt: "The public can now have its say across every category.", tag: "Voting", date: "2026-01-20" },
+    { id: 3, title: "Meet The Academy", excerpt: "Meet the people entrusted with shaping the shortlist.", tag: "Academy", date: "2026-01-25" }
+  ],
+
+  // Hall of Fame
+  hallOfFame: [
+    { year: "2026", name: "Amina Njeri", category: "Creative Personality of the Year" },
+    { year: "2026", name: "David Kamau", category: "Entrepreneur of the Year" },
+    { year: "2025", name: "Sample Winner 2025", category: "Music Personality of the Year" }
+  ],
+
+  // Partners
+  partners: [
+    { id: 1, name: "Presenting Partner", type: "presenting" },
+    { id: 2, name: "Category Partner", type: "category" },
+    { id: 3, name: "Media Partner", type: "media" },
+    { id: 4, name: "Technology Partner", type: "technology" }
+  ],
+
+  // Countdown
+  countdown: {
+    targetDate: "2026-12-31T19:00:00",
+    label: "The Night Begins In"
+  },
+
+  // Settings
+  settings: {
+    siteName: "Pinnacle Excellence Awards Africa",
+    tagline: "Celebrating Excellence. Inspiring Impact. Honouring Greatness.",
+    votingOpen: true,
+    resultsLive: false
+  },
+
+  // Next IDs
+  _nextId: { nominee: 9, category: 9, gallery: 5, news: 4, partner: 5 }
+};
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+let currentPage = 'dashboard';
+let charts = {};
+
+function navigate(page) {
+  currentPage = page;
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === page));
+  renderPage(page);
+  // Update page title
+  const titleMap = {
+    dashboard: 'Dashboard',
+    votes: 'Votes & Standings',
+    nominees: 'Nominees',
+    categories: 'Categories',
+    gallery: 'Gallery',
+    news: 'Newsroom',
+    'hall-of-fame': 'Hall of Fame',
+    partners: 'Partners',
+    settings: 'Settings',
+    countdown: 'Countdown'
+  };
+  document.querySelector('.page-title').innerHTML = titleMap[page] || 'Dashboard' + '<small>Pinnacle Excellence Awards · Admin Panel</small>';
+  // Close sidebar on mobile
+  if (window.innerWidth <= 992) {
+    closeSidebar();
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// ============================================================
+// RENDER PAGES
+// ============================================================
+
+function renderPage(page) {
+  const area = document.getElementById('contentArea');
+  switch(page) {
+    case 'dashboard': area.innerHTML = renderDashboard(); break;
+    case 'votes': area.innerHTML = renderVotes(); break;
+    case 'nominees': area.innerHTML = renderNominees(); break;
+    case 'categories': area.innerHTML = renderCategories(); break;
+    case 'gallery': area.innerHTML = renderGallery(); break;
+    case 'news': area.innerHTML = renderNews(); break;
+    case 'hall-of-fame': area.innerHTML = renderHallOfFame(); break;
+    case 'partners': area.innerHTML = renderPartners(); break;
+    case 'settings': area.innerHTML = renderSettings(); break;
+    case 'countdown': area.innerHTML = renderCountdown(); break;
+    default: area.innerHTML = '<p>Page not found</p>';
+  }
+  // Re-initialize charts if on dashboard
+  if (page === 'dashboard') {
+    setTimeout(initCharts, 100);
+  }
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+
+function renderDashboard() {
+  const s = AppData.stats;
+  const leaders = AppData.leaders.slice(0, 5);
+  return `
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-icon"><i class="fas fa-vote-yea"></i></span>
+        <div class="stat-number">${s.totalVotes.toLocaleString()}</div>
+        <div class="stat-label">Total Votes Cast</div>
+        <div class="stat-change up"><i class="fas fa-arrow-up"></i> ${s.votesToday} today</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon"><i class="fas fa-users"></i></span>
+        <div class="stat-number">${s.totalNominees}</div>
+        <div class="stat-label">Total Nominees</div>
+        <div class="stat-change">Across ${s.totalCategories} categories</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon"><i class="fas fa-trophy"></i></span>
+        <div class="stat-number">${s.liveNow}</div>
+        <div class="stat-label">Live Now</div>
+        <div class="stat-change up"><i class="fas fa-circle" style="color:var(--green-bright);font-size:0.5rem;"></i> Voting Open</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon"><i class="fas fa-percent"></i></span>
+        <div class="stat-number">${s.completion}%</div>
+        <div class="stat-label">Setup Complete</div>
+        <div class="stat-change up"><i class="fas fa-check-circle"></i> On track</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:20px;">
+      <div class="card-custom">
+        <div class="card-header-custom">
+          <h5><i class="fas fa-chart-bar" style="color:var(--gold);margin-right:8px;"></i> Votes by Category</h5>
+          <span class="sub">Top 5 categories</span>
+        </div>
+        <div class="chart-wrapper"><canvas id="chartCategoryVotes"></canvas></div>
+      </div>
+      <div class="card-custom">
+        <div class="card-header-custom">
+          <h5><i class="fas fa-list-ol" style="color:var(--gold);margin-right:8px;"></i> Category Leaders</h5>
+          <span class="sub">Current standings</span>
+        </div>
+        ${AppData.categoryStandings.slice(0, 5).map((c, i) => `
+          <div class="leader-item">
+            <div class="rank">#${i+1}</div>
+            <div class="info">
+              <div class="name">${c.leader}</div>
+              <div class="category">${c.category}</div>
+            </div>
+            <div class="votes">${c.votes} votes</div>
+          </div>
+        `).join('')}
+        <div style="margin-top:12px;text-align:center;">
+          <button class="btn-admin" onclick="navigate('votes')">View All Standings <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-trophy" style="color:var(--gold);margin-right:8px;"></i> Top 5 Nominees Overall</h5>
+        <span class="sub">By total votes</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Rank</th><th>Nominee</th><th>Category</th><th>Votes</th><th>Status</th></tr>
+          ${leaders.map((l, i) => `
+            <tr>
+              <td><strong>#${i+1}</strong></td>
+              <td><strong>${l.name}</strong></td>
+              <td>${l.category}</td>
+              <td>${l.votes.toLocaleString()}</td>
+              <td><span class="badge-status active">Leading</span></td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card-custom">
+        <div class="card-header-custom">
+          <h5><i class="fas fa-clock" style="color:var(--gold);margin-right:8px;"></i> Countdown</h5>
+          <span class="sub">To the big night</span>
+        </div>
+        <div style="text-align:center;padding:16px 0;">
+          <div style="font-size:2.5rem;font-weight:700;font-family:var(--font-display);color:var(--green);">${getCountdownDisplay()}</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">${AppData.countdown.label}</div>
+          <button class="btn-admin btn-admin-sm" onclick="navigate('countdown')" style="margin-top:8px;">Edit Countdown</button>
+        </div>
+      </div>
+      <div class="card-custom">
+        <div class="card-header-custom">
+          <h5><i class="fas fa-newspaper" style="color:var(--gold);margin-right:8px;"></i> Recent News</h5>
+          <span class="sub">Latest updates</span>
+        </div>
+        ${AppData.news.slice(0, 3).map(n => `
+          <div style="padding:8px 0;border-bottom:1px solid var(--line);">
+            <div style="font-weight:600;font-size:0.85rem;">${n.title}</div>
+            <div style="font-size:0.7rem;color:var(--muted);">${n.tag} · ${n.date}</div>
+          </div>
+        `).join('')}
+        <div style="margin-top:10px;">
+          <button class="btn-admin btn-admin-sm" onclick="navigate('news')">Manage News <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function getCountdownDisplay() {
+  const target = new Date(AppData.countdown.targetDate);
+  const now = new Date();
+  const diff = target - now;
+  if (diff <= 0) return '🎉 The Night Is Here!';
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  return `${d}d ${h}h ${m}m ${s}s`;
+}
+
+// ============================================================
+// VOTES & STANDINGS
+// ============================================================
+
+function renderVotes() {
+  return `
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="stat-card">
+        <div class="stat-number">${AppData.stats.totalVotes.toLocaleString()}</div>
+        <div class="stat-label">Total Votes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">${AppData.stats.votesToday}</div>
+        <div class="stat-label">Votes Today</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">${AppData.totalCategories}</div>
+        <div class="stat-label">Categories</div>
+      </div>
+    </div>
+
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-list-ol" style="color:var(--gold);margin-right:8px;"></i> Full Category Standings</h5>
+        <span class="sub">All categories with current leaders</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>#</th><th>Category</th><th>Current Leader</th><th>Votes</th><th>Total Votes in Category</th><th>Action</th></tr>
+          ${AppData.categoryStandings.map((c, i) => `
+            <tr>
+              <td>${i+1}</td>
+              <td><strong>${c.category}</strong></td>
+              <td>${c.leader}</td>
+              <td><strong>${c.votes}</strong></td>
+              <td>${c.total}</td>
+              <td><button class="btn-admin btn-admin-sm">View Details</button></td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    </div>
+
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-upload" style="color:var(--gold);margin-right:8px;"></i> Upload Live Standings</h5>
+        <span class="sub">Import standings data from CSV</span>
+      </div>
+      <div class="upload-zone" onclick="document.getElementById('standingsUpload').click()">
+        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <h6>Upload Standings CSV</h6>
+        <p>Format: Category, Leader, Votes, Total</p>
+        <input type="file" id="standingsUpload" accept=".csv" style="display:none;" onchange="handleStandingsUpload(event)">
+      </div>
+      <div style="margin-top:12px;">
+        <button class="btn-admin btn-admin-primary btn-admin-sm"><i class="fas fa-download"></i> Download Template</button>
+        <button class="btn-admin btn-admin-gold btn-admin-sm" style="margin-left:8px;" onclick="exportStandingsCSV()"><i class="fas fa-file-export"></i> Export Current</button>
+      </div>
+    </div>
+  `;
+}
+
+function handleStandingsUpload(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const text = ev.target.result;
+      alert('Standings uploaded successfully! (Demo)\n\n' + text.substring(0, 200) + '...');
+    };
+    reader.readAsText(file);
+  }
+}
+
+function exportStandingsCSV() {
+  let csv = 'Category,Leader,Votes,Total\n';
+  AppData.categoryStandings.forEach(c => {
+    csv += `${c.category},${c.leader},${c.votes},${c.total}\n`;
+  });
+  downloadFile(csv, 'standings-export.csv', 'text/csv');
+  alert('Standings exported!');
+}
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type: type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ============================================================
+// NOMINEES
+// ============================================================
+
+function renderNominees() {
+  return `
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-users" style="color:var(--gold);margin-right:8px;"></i> All Nominees (${AppData.nominees.length})</h5>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-admin btn-admin-primary" onclick="openNomineeModal()"><i class="fas fa-plus"></i> Add Nominee</button>
+          <button class="btn-admin" onclick="document.getElementById('nomineeUpload').click()"><i class="fas fa-upload"></i> Import</button>
+          <input type="file" id="nomineeUpload" accept=".csv" style="display:none;" onchange="handleNomineeUpload(event)">
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>ID</th><th>Name</th><th>Category</th><th>Group</th><th>Votes</th><th>Status</th><th>Actions</th></tr>
+          ${AppData.nominees.map(n => `
+            <tr>
+              <td>#${n.id}</td>
+              <td><strong>${n.name}</strong></td>
+              <td>${n.category}</td>
+              <td><span class="badge-status active">${n.group}</span></td>
+              <td>${n.votes}</td>
+              <td><span class="badge-status ${n.status}">${n.status}</span></td>
+              <td>
+                <button class="btn-admin btn-admin-sm" onclick="editNominee(${n.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteNominee(${n.id})"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    </div>
+
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-upload" style="color:var(--gold);margin-right:8px;"></i> Upload Nominees</h5>
+        <span class="sub">Bulk import via CSV</span>
+      </div>
+      <div class="upload-zone" onclick="document.getElementById('nomineeBulkUpload').click()">
+        <div class="icon"><i class="fas fa-file-csv"></i></div>
+        <h6>Upload CSV File</h6>
+        <p>Format: Name, Category, Group, Description, Gender</p>
+        <input type="file" id="nomineeBulkUpload" accept=".csv" style="display:none;" onchange="handleNomineeBulkUpload(event)">
+      </div>
+    </div>
+  `;
+}
+
+function openNomineeModal(data) {
+  const isEdit = data !== undefined;
+  const n = data || { name: '', category: '', group: '', votes: 0, status: 'active' };
+  const cats = AppData.categories.map(c => c.name);
+  const groups = ['Entertainment', 'Creative', 'Business', 'Leadership', 'Innovation', 'Social Impact'];
+  
+  const html = `
+    <div style="padding:10px 0;">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input class="form-control-admin" id="nomineeName" value="${n.name}" placeholder="e.g. John Doe">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category</label>
+          <select class="form-control-admin" id="nomineeCategory">
+            ${cats.map(c => `<option value="${c}" ${n.category === c ? 'selected' : ''}>${c}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Group</label>
+          <select class="form-control-admin" id="nomineeGroup">
+            ${groups.map(g => `<option value="${g}" ${n.group === g ? 'selected' : ''}>${g}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Initial Votes</label>
+          <input class="form-control-admin" id="nomineeVotes" type="number" value="${n.votes || 0}">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-control-admin" id="nomineeStatus">
+            <option value="active" ${n.status === 'active' ? 'selected' : ''}>Active</option>
+            <option value="draft" ${n.status === 'draft' ? 'selected' : ''}>Draft</option>
+            <option value="completed" ${n.status === 'completed' ? 'selected' : ''}>Completed</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input class="form-control-admin" id="nomineeDesc" value="${n.desc || ''}" placeholder="Brief description">
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+        <button class="btn-admin" onclick="closeModal()">Cancel</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveNominee(${isEdit ? n.id : 'null'})">${isEdit ? 'Update' : 'Add'} Nominee</button>
+      </div>
+    </div>
+  `;
+  showModal(isEdit ? 'Edit Nominee' : 'Add Nominee', html);
+}
+
+function saveNominee(id) {
+  const name = document.getElementById('nomineeName').value.trim();
+  const category = document.getElementById('nomineeCategory').value;
+  const group = document.getElementById('nomineeGroup').value;
+  const votes = parseInt(document.getElementById('nomineeVotes').value) || 0;
+  const status = document.getElementById('nomineeStatus').value;
+  const desc = document.getElementById('nomineeDesc').value.trim();
+
+  if (!name) { alert('Name is required'); return; }
+
+  if (id) {
+    const existing = AppData.nominees.find(n => n.id === id);
+    if (existing) {
+      existing.name = name;
+      existing.category = category;
+      existing.group = group;
+      existing.votes = votes;
+      existing.status = status;
+      existing.desc = desc;
+    }
+  } else {
+    AppData._nextId.nominee++;
+    AppData.nominees.push({
+      id: AppData._nextId.nominee,
+      name, category, group, votes, status, desc
+    });
+  }
+
+  closeModal();
+  renderPage('nominees');
+  alert(id ? 'Nominee updated!' : 'Nominee added!');
+}
+
+function editNominee(id) {
+  const n = AppData.nominees.find(x => x.id === id);
+  if (n) openNomineeModal(n);
+}
+
+function deleteNominee(id) {
+  if (confirm('Delete this nominee?')) {
+    AppData.nominees = AppData.nominees.filter(n => n.id !== id);
+    renderPage('nominees');
+    alert('Nominee deleted!');
+  }
+}
+
+function handleNomineeUpload(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      alert('Nominees imported successfully! (Demo)');
+    };
+    reader.readAsText(file);
+  }
+}
+
+function handleNomineeBulkUpload(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      alert('Bulk nominees uploaded! (Demo)');
+    };
+    reader.readAsText(file);
+  }
+}
+
+// ============================================================
+// CATEGORIES
+// ============================================================
+
+function renderCategories() {
+  return `
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-tags" style="color:var(--gold);margin-right:8px;"></i> All Categories (${AppData.categories.length})</h5>
+        <button class="btn-admin btn-admin-primary" onclick="openCategoryModal()"><i class="fas fa-plus"></i> Add Category</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>ID</th><th>Category Name</th><th>Group</th><th>Nominees</th><th>Description</th><th>Actions</th></tr>
+          ${AppData.categories.map(c => `
+            <tr>
+              <td>#${c.id}</td>
+              <td><strong>${c.name}</strong></td>
+              <td><span class="badge-status active">${c.group}</span></td>
+              <td>${c.nominees || 0}</td>
+              <td style="font-size:0.75rem;color:var(--muted);">${c.desc || '—'}</td>
+              <td>
+                <button class="btn-admin btn-admin-sm" onclick="editCategory(${c.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteCategory(${c.id})"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function openCategoryModal(data) {
+  const isEdit = data !== undefined;
+  const c = data || { name: '', group: 'Entertainment', desc: '' };
+  const groups = ['Entertainment', 'Creative', 'Business', 'Leadership', 'Innovation', 'Social Impact'];
+  
+  const html = `
+    <div style="padding:10px 0;">
+      <div class="form-group">
+        <label>Category Name</label>
+        <input class="form-control-admin" id="catName" value="${c.name}" placeholder="e.g. Music Personality of the Year">
+      </div>
+      <div class="form-group">
+        <label>Group</label>
+        <select class="form-control-admin" id="catGroup">
+          ${groups.map(g => `<option value="${g}" ${c.group === g ? 'selected' : ''}>${g}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="form-control-admin" id="catDesc" rows="2" placeholder="Category description">${c.desc || ''}</textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+        <button class="btn-admin" onclick="closeModal()">Cancel</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveCategory(${isEdit ? c.id : 'null'})">${isEdit ? 'Update' : 'Add'} Category</button>
+      </div>
+    </div>
+  `;
+  showModal(isEdit ? 'Edit Category' : 'Add Category', html);
+}
+
+function saveCategory(id) {
+  const name = document.getElementById('catName').value.trim();
+  const group = document.getElementById('catGroup').value;
+  const desc = document.getElementById('catDesc').value.trim();
+
+  if (!name) { alert('Category name is required'); return; }
+
+  if (id) {
+    const existing = AppData.categories.find(c => c.id === id);
+    if (existing) {
+      existing.name = name;
+      existing.group = group;
+      existing.desc = desc;
+    }
+  } else {
+    AppData._nextId.category++;
+    AppData.categories.push({
+      id: AppData._nextId.category,
+      name, group, desc, nominees: 0
+    });
+  }
+
+  closeModal();
+  renderPage('categories');
+  alert(id ? 'Category updated!' : 'Category added!');
+}
+
+function editCategory(id) {
+  const c = AppData.categories.find(x => x.id === id);
+  if (c) openCategoryModal(c);
+}
+
+function deleteCategory(id) {
+  if (confirm('Delete this category?')) {
+    AppData.categories = AppData.categories.filter(c => c.id !== id);
+    renderPage('categories');
+    alert('Category deleted!');
+  }
+}
+
+// ============================================================
+// GALLERY
+// ============================================================
+
+function renderGallery() {
+  return `
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-images" style="color:var(--gold);margin-right:8px;"></i> Gallery (${AppData.gallery.length})</h5>
+        <button class="btn-admin btn-admin-primary" onclick="openGalleryModal()"><i class="fas fa-plus"></i> Add Image</button>
+      </div>
+      <div class="grid-3">
+        ${AppData.gallery.map(img => `
+          <div style="border:1px solid var(--line);border-radius:8px;overflow:hidden;position:relative;">
+            <img src="${img.url}" alt="${img.title}" style="width:100%;height:160px;object-fit:cover;">
+            <div style="padding:8px 12px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.75rem;font-weight:600;">${img.title}</span>
+              <div>
+                <button class="btn-admin btn-admin-sm" onclick="editGalleryItem(${img.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteGalleryItem(${img.id})"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-upload" style="color:var(--gold);margin-right:8px;"></i> Upload Gallery Images</h5>
+        <span class="sub">Drag & drop or click to upload</span>
+      </div>
+      <div class="upload-zone" onclick="document.getElementById('galleryUpload').click()">
+        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <h6>Upload Images</h6>
+        <p>PNG, JPG, WEBP up to 5MB</p>
+        <input type="file" id="galleryUpload" accept="image/*" multiple style="display:none;" onchange="handleGalleryUpload(event)">
+      </div>
+    </div>
+  `;
+}
+
+function openGalleryModal(data) {
+  const isEdit = data !== undefined;
+  const img = data || { title: '', url: '' };
+  
+  const html = `
+    <div style="padding:10px 0;">
+      <div class="form-group">
+        <label>Image Title</label>
+        <input class="form-control-admin" id="galleryTitle" value="${img.title}" placeholder="e.g. Awards Night 2025">
+      </div>
+      <div class="form-group">
+        <label>Image URL</label>
+        <input class="form-control-admin" id="galleryUrl" value="${img.url}" placeholder="https://...">
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+        <button class="btn-admin" onclick="closeModal()">Cancel</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveGalleryItem(${isEdit ? img.id : 'null'})">${isEdit ? 'Update' : 'Add'} Image</button>
+      </div>
+    </div>
+  `;
+  showModal(isEdit ? 'Edit Image' : 'Add Image', html);
+}
+
+function saveGalleryItem(id) {
+  const title = document.getElementById('galleryTitle').value.trim();
+  const url = document.getElementById('galleryUrl').value.trim();
+
+  if (!title || !url) { alert('Title and URL are required'); return; }
+
+  if (id) {
+    const existing = AppData.gallery.find(g => g.id === id);
+    if (existing) { existing.title = title; existing.url = url; }
+  } else {
+    AppData._nextId.gallery++;
+    AppData.gallery.push({ id: AppData._nextId.gallery, title, url });
+  }
+
+  closeModal();
+  renderPage('gallery');
+  alert(id ? 'Image updated!' : 'Image added!');
+}
+
+function editGalleryItem(id) {
+  const img = AppData.gallery.find(x => x.id === id);
+  if (img) openGalleryModal(img);
+}
+
+function deleteGalleryItem(id) {
+  if (confirm('Delete this image?')) {
+    AppData.gallery = AppData.gallery.filter(g => g.id !== id);
+    renderPage('gallery');
+    alert('Image deleted!');
+  }
+}
+
+function handleGalleryUpload(e) {
+  const files = e.target.files;
+  if (files.length) {
+    alert(`${files.length} image(s) uploaded successfully! (Demo)`);
+    // In a real app, you'd upload to server and add to gallery
+  }
+}
+
+// ============================================================
+// NEWSROOM
+// ============================================================
+
+function renderNews() {
+  return `
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-newspaper" style="color:var(--gold);margin-right:8px;"></i> News Articles (${AppData.news.length})</h5>
+        <button class="btn-admin btn-admin-primary" onclick="openNewsModal()"><i class="fas fa-plus"></i> Add Article</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>ID</th><th>Title</th><th>Tag</th><th>Date</th><th>Excerpt</th><th>Actions</th></tr>
+          ${AppData.news.map(n => `
+            <tr>
+              <td>#${n.id}</td>
+              <td><strong>${n.title}</strong></td>
+              <td><span class="badge-status active">${n.tag}</span></td>
+              <td>${n.date}</td>
+              <td style="font-size:0.75rem;color:var(--muted);">${n.excerpt.substring(0, 40)}${n.excerpt.length > 40 ? '...' : ''}</td>
+              <td>
+                <button class="btn-admin btn-admin-sm" onclick="editNews(${n.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteNews(${n.id})"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function openNewsModal(data) {
+  const isEdit = data !== undefined;
+  const n = data || { title: '', excerpt: '', tag: 'Announcement', date: new Date().toISOString().split('T')[0] };
+  const tags = ['Announcement', 'Voting', 'Academy', 'Event', 'Results'];
+  
+  const html = `
+    <div style="padding:10px 0;">
+      <div class="form-group">
+        <label>Title</label>
+        <input class="form-control-admin" id="newsTitle" value="${n.title}" placeholder="Article title">
+      </div>
+      <div class="form-group">
+        <label>Excerpt</label>
+        <textarea class="form-control-admin" id="newsExcerpt" rows="2" placeholder="Brief summary">${n.excerpt}</textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tag</label>
+          <select class="form-control-admin" id="newsTag">
+            ${tags.map(t => `<option value="${t}" ${n.tag === t ? 'selected' : ''}>${t}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input class="form-control-admin" id="newsDate" type="date" value="${n.date}">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+        <button class="btn-admin" onclick="closeModal()">Cancel</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveNews(${isEdit ? n.id : 'null'})">${isEdit ? 'Update' : 'Add'} Article</button>
+      </div>
+    </div>
+  `;
+  showModal(isEdit ? 'Edit Article' : 'Add Article', html);
+}
+
+function saveNews(id) {
+  const title = document.getElementById('newsTitle').value.trim();
+  const excerpt = document.getElementById('newsExcerpt').value.trim();
+  const tag = document.getElementById('newsTag').value;
+  const date = document.getElementById('newsDate').value;
+
+  if (!title || !excerpt) { alert('Title and excerpt are required'); return; }
+
+  if (id) {
+    const existing = AppData.news.find(n => n.id === id);
+    if (existing) { existing.title = title; existing.excerpt = excerpt; existing.tag = tag; existing.date = date; }
+  } else {
+    AppData._nextId.news++;
+    AppData.news.push({ id: AppData._nextId.news, title, excerpt, tag, date });
+  }
+
+  closeModal();
+  renderPage('news');
+  alert(id ? 'Article updated!' : 'Article added!');
+}
+
+function editNews(id) {
+  const n = AppData.news.find(x => x.id === id);
+  if (n) openNewsModal(n);
+}
+
+function deleteNews(id) {
+  if (confirm('Delete this article?')) {
+    AppData.news = AppData.news.filter(n => n.id !== id);
+    renderPage('news');
+    alert('Article deleted!');
+  }
+}
+
+// ============================================================
+// HALL OF FAME
+// ============================================================
+
+function renderHallOfFame() {
+  return `
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-trophy" style="color:var(--gold);margin-right:8px;"></i> Hall of Fame (${AppData.hallOfFame.length})</h5>
+        <button class="btn-admin btn-admin-primary" onclick="openHOFModal()"><i class="fas fa-plus"></i> Add Entry</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Year</th><th>Name</th><th>Category</th><th>Actions</th></tr>
+          ${AppData.hallOfFame.map(h => `
+            <tr>
+              <td><strong>${h.year}</strong></td>
+              <td>${h.name}</td>
+              <td>${h.category}</td>
+              <td>
+                <button class="btn-admin btn-admin-sm" onclick="editHOFEntry('${h.year}', '${h.name}')"><i class="fas fa-edit"></i></button>
+                <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deleteHOFEntry('${h.year}', '${h.name}')"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function openHOFModal(data) {
+  const isEdit = data !== undefined;
+  const h = data || { year: new Date().getFullYear().toString(), name: '', category: '' };
+  
+  const html = `
+    <div style="padding:10px 0;">
+      <div class="form-group">
+        <label>Year</label>
+        <input class="form-control-admin" id="hofYear" value="${h.year}" placeholder="e.g. 2026">
+      </div>
+      <div class="form-group">
+        <label>Name</label>
+        <input class="form-control-admin" id="hofName" value="${h.name}" placeholder="Winner name">
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <input class="form-control-admin" id="hofCategory" value="${h.category}" placeholder="Category">
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+        <button class="btn-admin" onclick="closeModal()">Cancel</button>
+        <button class="btn-admin btn-admin-primary" onclick="saveHOFEntry(${isEdit ? 'true' : 'false'})">${isEdit ? 'Update' : 'Add'} Entry</button>
+      </div>
+    </div>
+  `;
+  showModal(isEdit ? 'Edit Hall of Fame Entry' : 'Add Hall of Fame Entry', html);
+}
+
+function saveHOFEntry(isEdit) {
+  const year = document.getElementById('hofYear').value.trim();
+  const name = document.getElementById('hofName').value.trim();
+  const category = document.getElementById('hofCategory').value.trim();
+
+  if (!year || !name || !category) { alert('All fields are required'); return; }
+
+  if (isEdit) {
+    // Find and update (simplified - would need to match by year+name)
+    alert('Entry updated! (Demo)');
+  } else {
+    AppData.hallOfFame.push({ year, name, category });
+    alert('Entry added!');
+  }
+
+  closeModal();
+  renderPage('hall-of-fame');
+}
+
+function editHOFEntry(year, name) {
+  const entry = AppData.hallOfFame.find(h => h.year === year && h.name === name);
+  if (entry) openHOFModal(entry);
+}
+
+function deleteHOFEntry(year, name) {
+  if (confirm('Delete this hall of fame entry?')) {
+    AppData.hallOfFame = AppData.hallOfFame.filter(h => !(h.year === year && h.name === name));
+    renderPage('hall-of-fame');
+    alert('Entry deleted!');
+  }
+}
+
+// ============================================================
+// PARTNERS
+// ============================================================
+
+function renderPartners() {
+  return `
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-handshake" style="color:var(--gold);margin-right:8px;"></i> Partners (${AppData.partners.length})</h5>
+        <button class="btn-admin btn-admin-primary" onclick="openPartnerModal()"><i class="fas fa-plus"></i> Add Partner</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>ID</th><th>Name</th><th>Type</th><th>Actions</th></tr>
+          ${AppData.partners.map(p => `
+            <tr>
+              <td>#${p.id}</td>
+              <td><strong>${p.name}</strong></td>
+              <td><span class="badge-status active">${p.type}</span></td>
+              <td>
+                <button class="btn-admin btn-admin-sm" onclick="editPartner(${p.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn-admin btn-admin-sm btn-admin-danger" onclick="deletePartner(${p.id})"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function openPartnerModal(data) {
+  const isEdit = data !== undefined;
+  const p = data || { name: '', type: 'presenting' };
+  const types = ['presenting', 'category', 'media', 'technology', 'community'];
+  
+  const html = `
+    <div style="padding:10px 0;">
+      <div class="form-group">
+        <label>Partner Name</label>
+        <input class="form-control-admin" id="partnerName" value="${p.name}" placeholder="e.g. Media Partner">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select class="form-control-admin" id="partnerType">
+          ${types.map(t => `<option value="${t}" ${p.type === t ? 'selected' : ''}>${t.charAt(0).toUpperCase() + t.slice(1)}</option>`).join('')}
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+        <button class="btn-admin" onclick="closeModal()">Cancel</button>
+        <button class="btn-admin btn-admin-primary" onclick="savePartner(${isEdit ? p.id : 'null'})">${isEdit ? 'Update' : 'Add'} Partner</button>
+      </div>
+    </div>
+  `;
+  showModal(isEdit ? 'Edit Partner' : 'Add Partner', html);
+}
+
+function savePartner(id) {
+  const name = document.getElementById('partnerName').value.trim();
+  const type = document.getElementById('partnerType').value;
+
+  if (!name) { alert('Partner name is required'); return; }
+
+  if (id) {
+    const existing = AppData.partners.find(p => p.id === id);
+    if (existing) { existing.name = name; existing.type = type; }
+  } else {
+    AppData._nextId.partner++;
+    AppData.partners.push({ id: AppData._nextId.partner, name, type });
+  }
+
+  closeModal();
+  renderPage('partners');
+  alert(id ? 'Partner updated!' : 'Partner added!');
+}
+
+function editPartner(id) {
+  const p = AppData.partners.find(x => x.id === id);
+  if (p) openPartnerModal(p);
+}
+
+function deletePartner(id) {
+  if (confirm('Delete this partner?')) {
+    AppData.partners = AppData.partners.filter(p => p.id !== id);
+    renderPage('partners');
+    alert('Partner deleted!');
+  }
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+
+function renderSettings() {
+  const s = AppData.settings;
+  return `
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-cog" style="color:var(--gold);margin-right:8px;"></i> General Settings</h5>
+      </div>
+      <div style="max-width:600px;">
+        <div class="form-group">
+          <label>Site Name</label>
+          <input class="form-control-admin" id="settingSiteName" value="${s.siteName}">
+        </div>
+        <div class="form-group">
+          <label>Tagline</label>
+          <input class="form-control-admin" id="settingTagline" value="${s.tagline}">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Voting Open</label>
+            <select class="form-control-admin" id="settingVoting">
+              <option value="true" ${s.votingOpen ? 'selected' : ''}>Yes</option>
+              <option value="false" ${!s.votingOpen ? 'selected' : ''}>No</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Results Live</label>
+            <select class="form-control-admin" id="settingResults">
+              <option value="true" ${s.resultsLive ? 'selected' : ''}>Yes</option>
+              <option value="false" ${!s.resultsLive ? 'selected' : ''}>No</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-admin btn-admin-primary" onclick="saveSettings()"><i class="fas fa-save"></i> Save Settings</button>
+      </div>
+    </div>
+  `;
+}
+
+function saveSettings() {
+  AppData.settings.siteName = document.getElementById('settingSiteName').value.trim();
+  AppData.settings.tagline = document.getElementById('settingTagline').value.trim();
+  AppData.settings.votingOpen = document.getElementById('settingVoting').value === 'true';
+  AppData.settings.resultsLive = document.getElementById('settingResults').value === 'true';
+  alert('Settings saved!');
+}
+
+// ============================================================
+// COUNTDOWN
+// ============================================================
+
+function renderCountdown() {
+  const c = AppData.countdown;
+  return `
+    <div class="card-custom">
+      <div class="card-header-custom">
+        <h5><i class="fas fa-clock" style="color:var(--gold);margin-right:8px;"></i> Countdown Settings</h5>
+      </div>
+      <div style="max-width:500px;">
+        <div class="form-group">
+          <label>Event Date & Time</label>
+          <input class="form-control-admin" id="countdownDate" type="datetime-local" value="${c.targetDate.substring(0, 16)}">
+        </div>
+        <div class="form-group">
+          <label>Label</label>
+          <input class="form-control-admin" id="countdownLabel" value="${c.label}" placeholder="e.g. The Night Begins In">
+        </div>
+        <div style="padding:16px;background:var(--bg);border-radius:8px;margin:12px 0;text-align:center;">
+          <div style="font-size:2rem;font-weight:700;font-family:var(--font-display);color:var(--green);">${getCountdownDisplay()}</div>
+          <div style="font-size:0.75rem;color:var(--muted);">${c.label}</div>
+        </div>
+        <button class="btn-admin btn-admin-primary" onclick="saveCountdown()"><i class="fas fa-save"></i> Save Countdown</button>
+      </div>
+    </div>
+  `;
+}
+
+function saveCountdown() {
+  const date = document.getElementById('countdownDate').value;
+  const label = document.getElementById('countdownLabel').value.trim();
+  
+  if (!date) { alert('Please select a date and time'); return; }
+  
+  AppData.countdown.targetDate = date + ':00';
+  AppData.countdown.label = label || 'The Night Begins In';
+  alert('Countdown updated!');
+  renderPage('countdown');
+}
+
+// ============================================================
+// MODAL SYSTEM
+// ============================================================
+
+function showModal(title, bodyHtml) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay-custom';
+  overlay.id = 'customModal';
+  overlay.style.cssText = `
+    position:fixed;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;z-index:2000;
+    opacity:0;transition:opacity 0.25s ease;
+  `;
+  overlay.innerHTML = `
+    <div style="background:var(--white);border-radius:16px;padding:24px;width:560px;max-width:92vw;max-height:90vh;overflow-y:auto;transform:translateY(20px) scale(0.97);transition:transform 0.25s ease;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h5 style="font-family:var(--font-display);font-weight:700;margin:0;">${title}</h5>
+        <button onclick="closeModal()" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);"><i class="fas fa-times"></i></button>
+      </div>
+      <div>${bodyHtml}</div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => {
+    overlay.style.opacity = '1';
+    overlay.querySelector('div > div').style.transform = 'translateY(0) scale(1)';
+  });
+}
+
+function closeModal() {
+  const overlay = document.getElementById('customModal');
+  if (overlay) {
+    overlay.style.opacity = '0';
+    overlay.querySelector('div > div').style.transform = 'translateY(20px) scale(0.97)';
+    setTimeout(() => overlay.remove(), 300);
+  }
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+
+function initCharts() {
+  if (typeof Chart === 'undefined') return;
+  
+  // Destroy existing charts
+  Object.values(charts).forEach(c => { try { c.destroy(); } catch(e) {} });
+  charts = {};
+
+  // Category Votes Chart
+  const ctx = document.getElementById('chartCategoryVotes');
+  if (ctx) {
+    const labels = AppData.categoryStandings.slice(0, 5).map(c => c.category.substring(0, 20) + (c.category.length > 20 ? '...' : ''));
+    const data = AppData.categoryStandings.slice(0, 5).map(c => c.votes);
+    
+    charts.categoryVotes = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Votes',
+          data: data,
+          backgroundColor: ['#2B6E4B', '#F5C842', '#2EB872', '#1a6dff', '#e67e22'],
+          borderRadius: 6,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { font: { size: 10 } } },
+          x: { ticks: { font: { size: 9 }, maxRotation: 30 } }
+        }
+      }
+    });
+  }
+}
+
+// ============================================================
+// LOGOUT
+// ============================================================
+
+function logout() {
+  if (confirm('Are you sure you want to sign out?')) {
+    alert('Signed out successfully!');
+    // In a real app, redirect to login
+    window.location.href = '#';
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+  navigate('dashboard');
+});
+
+// Global search
+document.getElementById('globalSearch').addEventListener('input', function(e) {
+  const q = e.target.value.trim().toLowerCase();
+  if (q.length > 1) {
+    const results = AppData.nominees.filter(n => n.name.toLowerCase().includes(q) || n.category.toLowerCase().includes(q));
+    if (results.length) {
+      alert(`Found ${results.length} nominees matching "${q}"\n\n${results.map(r => r.name + ' — ' + r.category).join('\n')}`);
+    }
+  }
+});
+</script>
+</body>
+</html>
+
+
+<h1>pk_live_e18b2825aafe4535ae10b81fe96806d00231e9ec</h1>
+<h2>sk_live_e610e08e8c071af8c4c670b48d493d13cdaec3ab</h2>

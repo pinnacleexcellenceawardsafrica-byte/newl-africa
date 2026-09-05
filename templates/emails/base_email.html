@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #2c5aa0 0%, #3a7bd5 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo-tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        
+        .email-body {
+            padding: 40px 30px;
+        }
+        
+        .content-section {
+            margin-bottom: 30px;
+        }
+        
+        .content-title {
+            color: #2c5aa0;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .content-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, #2c5aa0, #3a7bd5);
+            border-radius: 2px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 4px solid #2c5aa0;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .info-item {
+            background: #f8faff;
+            border: 1px solid #e8f1ff;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #2c5aa0;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            color: #333;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #2c5aa0 0%, #3a7bd5 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(44, 90, 160, 0.3);
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .contact-info {
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-link {
+            display: inline-block;
+            margin: 0 10px;
+            color: #2c5aa0;
+            text-decoration: none;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .email-container {
+                border-radius: 0;
+            }
+            
+            .email-header,
+            .email-body {
+                padding: 30px 20px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        {% block header %}
+        <div class="email-header">
+            <a href="https://yourwebsite.com" class="logo">
+                <h1 class="logo-text">Mwasamwanda Well-being Services</h1>
+            </a>
+            <p class="logo-tagline">Empowerment, Enhanced Productivity, Happy Life</p>
+        </div>
+        {% endblock %}
+        
+        <div class="email-body">
+            {% block content %}{% endblock %}
+        </div>
+        
+        {% block footer %}
+        <div class="footer">
+            <div class="contact-info">
+                <p><strong>Contact Us:</strong></p>
+                <p>📞 +254 758 283 613 | 📧 mwasawellservices@gmail.com</p>
+                <p>P.O Box 51646 – 00100, Nairobi, Kenya</p>
+                <p>Mon-Fri: 8AM-5PM | Sat: 8:30AM-2:30PM</p>
+            </div>
+            <div class="social-links">
+                <a href="https://facebook.com" class="social-link">Facebook</a>
+                <a href="https://linkedin.com" class="social-link">LinkedIn</a>
+                <a href="https://twitter.com" class="social-link">Twitter</a>
+                <a href="https://youtube.com" class="social-link">YouTube</a>
+            </div>
+            <p style="font-size: 12px; color: #999; margin-top: 20px;">
+                This email was sent to you because you interacted with Mwasamwanda Well-being Services.<br>
+                If you didn't expect this email, please ignore it.
+            </p>
+        </div>
+        {% endblock %}
+    </div>
+</body>
+</html>

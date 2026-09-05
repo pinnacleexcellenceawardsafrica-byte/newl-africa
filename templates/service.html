@@ -1,0 +1,1571 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Mwasamwanda Well-being Services</title>
+  <meta name="description" content="Bonpesa Foundation">
+  <meta name="keywords" content="Charity Love Bonpesa FoundationUU">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/logo.png' %}" rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'main.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+  
+      <a href="/" class="logo d-flex align-items-center me-auto me-xl-0">
+        <h1 class="sitename">Mwasamwanda Well-being Services</h1>
+      </a>
+  
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#features">About Us</a></li>
+          <li><a href="#services">Our Services</a></li>
+          <li><a href="#approach">Our Impact</a></li>
+          <li><a href="#booking">Booking</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+  
+      
+  
+    </div>
+</header>
+
+<style>
+  .logo .sitename {
+    color: #2c5aa0;
+    font-weight: 700;
+  }
+  
+  .navmenu a.active {
+    color: #2c5aa0;
+  }
+  
+  .btn-getstarted {
+    background: #2c5aa0;
+    color: white;
+    border: 2px solid #2c5aa0;
+  }
+  
+  .btn-getstarted:hover {
+    background: transparent;
+    color: #2c5aa0;
+  }
+
+  @media (max-width: 768px) {
+    .logo .sitename {
+      font-size: 1.1rem;
+    }
+
+    .btn-getstarted {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .header-container {
+      padding: 0.5rem 1rem;
+    }
+  }
+</style>
+
+  
+  <main class="main">
+
+   <!-- Hero Section -->
+<section id="hero" class="hero section">
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="hero-content" data-aos="fade-up" data-aos-delay="200">
+          <div class="company-badge mb-4">
+            <i class="bi bi-heart-fill me-2"></i>
+            Empowerment, Enhanced Productivity, Happy Life
+          </div>
+
+          <h1 class="mb-4">
+            Enhancing Normative Development <br>
+            and Mental Health <br>
+            <span class="accent-text">Across the Lifespan</span>
+          </h1>
+
+          <p class="mb-4 mb-md-5">
+            Mwasamwanda Well-being Services facilitates normative development and mental health 
+            through professional, evidence-based psychological interventions for individuals and groups.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#services" class="btn btn-primary me-0 me-sm-2 mx-1">Our Services</a>
+            <a href="#booking" class="btn btn-link mt-2 mt-sm-0 schedule-appointment-btn">
+              <i class="bi bi-calendar-check me-1"></i>
+              Schedule Appointment
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="hero-image" data-aos="zoom-out" data-aos-delay="300">
+          <img src="https://lifeplanccony.com/wp-content/uploads/2025/04/Mental-Health-Awareness-Month.png" alt="Mental Health Professional" class="img-fluid">
+
+          <div class="customers-badge">
+            <div class="customer-avatars">
+              <img src="{% static 'images/juicy.png' %}" alt="Client 1" class="avatar">
+              <img src="{% static 'images/mku.png' %}" alt="Client 2" class="avatar">
+              <img src="{% static 'images/Kenya-Wildlife-Service.jpg' %}" alt="Client 3" class="avatar">
+              <span class="avatar more">100+</span>
+            </div>
+            <p class="mb-0 mt-2">100+ clients empowered and counting</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row stats-row gy-4 mt-5" data-aos="fade-up" data-aos-delay="500">
+      <div class="col-lg-3 col-md-6">
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="bi bi-person-check"></i>
+          </div>
+          <div class="stat-content">
+            <h4>Professional Psychologists</h4>
+            <p class="mb-0">Competent and experienced team</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="bi bi-gear"></i>
+          </div>
+          <div class="stat-content">
+            <h4>Evidence-Based Methods</h4>
+            <p class="mb-0">Using proven psychological interventions</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="bi bi-globe"></i>
+          </div>
+          <div class="stat-content">
+            <h4>Global Standards</h4>
+            <p class="mb-0">Following current professional trends</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="stat-item">
+          <div class="stat-icon">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <div class="stat-content">
+            <h4>Across Lifespan</h4>
+            <p class="mb-0">Services for all age groups</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+<!-- /Hero Section -->
+
+
+
+
+
+
+<!-- Features Section -->
+<section id="features" class="features section">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Our Guiding Principles</h2>
+    <p><strong>Slogan:</strong> "Empowerment, enhanced productivity and happy life"</p>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+
+    <div class="d-flex justify-content-center">
+
+      <ul class="nav nav-tabs" data-aos="fade-up" data-aos-delay="100">
+
+        <li class="nav-item">
+          <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#features-tab-1">
+            <h4>Our Vision</h4>
+          </a>
+        </li><!-- End tab nav item -->
+
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-2">
+            <h4>Our Mission</h4>
+          </a><!-- End tab nav item -->
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-3">
+            <h4>Core Values</h4>
+          </a>
+        </li><!-- End tab nav item -->
+
+      </ul>
+
+    </div>
+
+    <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+
+      <div class="tab-pane fade active show" id="features-tab-1">
+        <div class="row">
+          <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+            <h3>Our Vision</h3>
+            <p class="fst-italic">
+              Being a strategic global leader in enhancing normative development and mental health through effective professional, evidence-based and innovative psychological interventions.
+            </p>
+            <ul>
+              <li><i class="bi bi-check2-all"></i> <span>Global leadership in mental health services</span></li>
+              <li><i class="bi bi-check2-all"></i> <span>Evidence-based psychological interventions</span></li>
+              <li><i class="bi bi-check2-all"></i> <span>Innovative approaches to normative development</span></li>
+            </ul>
+          </div>
+          <div class="col-lg-6 order-1 order-lg-2 text-center">
+            <img src="https://thumbs.dreamstime.com/b/our-vision-drawn-white-brick-wall-d-inscription-modern-illustation-blue-arrow-hand-icons-around-brickwall-89018617.jpg" alt="Global Leadership in Mental Health" class="img-fluid">
+          </div>
+        </div>
+      </div><!-- End tab content item -->
+
+      <div class="tab-pane fade" id="features-tab-2">
+        <div class="row">
+          <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+            <h3>Our Mission</h3>
+            <p class="fst-italic">
+              Developing and using effective professional, evidence-based and innovative psychological interventions through consultancy and advisory, counselling/psychotherapy and training to enhance normative development and mental health at individual and group levels across the lifespan.
+            </p>
+            <ul>
+              <li><i class="bi bi-check2-all"></i> <span>Professional psychological interventions</span></li>
+              <li><i class="bi bi-check2-all"></i> <span>Services across the entire lifespan</span></li>
+              <li><i class="bi bi-check2-all"></i> <span>Individual and group level support</span></li>
+            </ul>
+          </div>
+          <div class="col-lg-6 order-1 order-lg-2 text-center">
+            <img src="https://www.energyquestmagazine.com/wp-content/uploads/2017/02/mission.jpg" alt="Psychological Interventions Across Lifespan" class="img-fluid">
+          </div>
+        </div>
+      </div><!-- End tab content item -->
+
+      <div class="tab-pane fade" id="features-tab-3">
+        <div class="row">
+          <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+            <h3>Our Core Values</h3>
+            <ul>
+              <li><i class="bi bi-check2-all"></i> <span><strong>Empowerment</strong> – Enabling people to exploit their potential as expected.</span></li>
+              <li><i class="bi bi-check2-all"></i> <span><strong>Professionalism</strong> – Upholding competence, responsibility and accountability in service delivery.</span></li>
+              <li><i class="bi bi-check2-all"></i> <span><strong>Innovation</strong> – Embracing creativity in service delivery.</span></li>
+              <li><i class="bi bi-check2-all"></i> <span><strong>Client-centred</strong> – Doing all for the best for the clients' interests.</span></li>
+            </ul>
+          </div>
+          <div class="col-lg-6 order-1 order-lg-2 text-center">
+            <img src="https://www.v3co.com/wp-content/uploads/2023/10/Our-Core-Values-blog-header.png" alt="Core Values in Practice" class="img-fluid">
+          </div>
+        </div>
+      </div><!-- End tab content item -->
+
+    </div>
+
+  </div>
+
+</section><!-- /Features Section -->
+
+
+
+
+<!-- Features Cards Section -->
+<section id="features-cards" class="features-cards section">
+
+  <div class="container">
+
+    <div class="row gy-4">
+
+      <div class="col-xl-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+        <div class="feature-box orange">
+          <i class="bi bi-person-check"></i>
+          <h4>Professional Consultancy</h4>
+          <p>Policy formulation, program planning, and psychological assessment services.</p>
+        </div>
+      </div><!-- End Feature Box -->
+
+      <div class="col-xl-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+        <div class="feature-box blue">
+          <i class="bi bi-chat-dots"></i>
+          <h4>Therapy Services</h4>
+          <p>Individual, couple, family, and group counseling across the lifespan.</p>
+        </div>
+      </div><!-- End Feature Box -->
+
+      <div class="col-xl-3 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+        <div class="feature-box green">
+          <i class="bi bi-mortarboard"></i>
+          <h4>Training Programs</h4>
+          <p>Mental health awareness, parenting education, and workplace safety training.</p>
+        </div>
+      </div><!-- End Feature Box -->
+
+      <div class="col-xl-3 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+        <div class="feature-box red">
+          <i class="bi bi-telephone"></i>
+          <h4>Accessible Services</h4>
+          <p>Available in-person, by telephone, and online for your convenience.</p>
+        </div>
+      </div><!-- End Feature Box -->
+
+    </div>
+
+  </div>
+
+</section><!-- /Features Cards Section -->
+
+
+
+
+   <!-- Call To Action Section -->
+<section id="call-to-action" class="call-to-action section">
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="row content justify-content-center align-items-center position-relative">
+      <div class="col-lg-8 mx-auto text-center">
+        <h2 class="display-4 mb-4">Enhance Your Mental Well-being Today</h2>
+        <p class="mb-4">Take the first step toward empowerment, enhanced productivity, and a happier life with our professional psychological services.</p>
+        <a href="#booking" class="btn btn-cta">Schedule Your Consultation</a>
+      </div>
+
+      <!-- Abstract Background Elements -->
+      <div class="shape shape-1" aria-hidden="true">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" alt="Decorative abstract shape">
+          <path d="M47.1,-57.1C59.9,-45.6,68.5,-28.9,71.4,-10.9C74.2,7.1,71.3,26.3,61.5,41.1C51.7,55.9,35,66.2,16.9,69.2C-1.3,72.2,-21,67.8,-36.9,57.9C-52.8,48,-64.9,32.6,-69.1,15.1C-73.3,-2.4,-69.5,-22,-59.4,-37.1C-49.3,-52.2,-32.8,-62.9,-15.7,-64.9C1.5,-67,34.3,-68.5,47.1,-57.1Z" transform="translate(100 100)"></path>
+        </svg>
+      </div>
+
+      <div class="shape shape-2" aria-hidden="true">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" alt="Decorative abstract shape">
+          <path d="M41.3,-49.1C54.4,-39.3,66.6,-27.2,71.1,-12.1C75.6,3,72.4,20.9,63.3,34.4C54.2,47.9,39.2,56.9,23.2,62.3C7.1,67.7,-10,69.4,-24.8,64.1C-39.7,58.8,-52.3,46.5,-60.1,31.5C-67.9,16.4,-70.9,-1.4,-66.3,-16.6C-61.8,-31.8,-49.7,-44.3,-36.3,-54C-22.9,-63.7,-8.2,-70.6,3.6,-75.1C15.4,-79.6,28.2,-58.9,41.3,-49.1Z" transform="translate(100 100)"></path>
+        </svg>
+      </div>
+
+      <!-- Dot Pattern Groups -->
+      <div class="dots dots-1" aria-hidden="true">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" alt="Dot pattern background">
+          <pattern id="dot-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="2" fill="currentColor"></circle>
+          </pattern>
+          <rect width="100" height="100" fill="url(#dot-pattern)"></rect>
+        </svg>
+      </div>
+
+      <div class="dots dots-2" aria-hidden="true">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" alt="Dot pattern background">
+          <pattern id="dot-pattern-2" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="2" fill="currentColor"></circle>
+          </pattern>
+          <rect width="100" height="100" fill="url(#dot-pattern-2)"></rect>
+        </svg>
+      </div>
+
+      <div class="shape shape-3" aria-hidden="true">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" alt="Decorative abstract shape">
+          <path d="M43.3,-57.1C57.4,-46.5,71.1,-32.6,75.3,-16.2C79.5,0.2,74.2,19.1,65.1,35.3C56,51.5,43.1,65,27.4,71.7C11.7,78.4,-6.8,78.3,-23.9,72.4C-41,66.5,-56.7,54.8,-65.4,39.2C-74.1,23.6,-75.8,4,-71.7,-13.2C-67.6,-30.4,-57.7,-45.2,-44.3,-56.1C-30.9,-67,-15.5,-74,0.7,-74.9C16.8,-75.8,33.7,-70.7,43.3,-57.1Z" transform="translate(100 100)"></path>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+
+</section><!-- /Call To Action Section -->
+
+<!-- Services Section -->
+<section id="services" class="services section">
+
+  <!-- Section Title -->
+  <div class="container section-title text-center" data-aos="fade-up">
+    <h2>Our Professional Services</h2>
+    <p>Comprehensive psychological interventions designed to enhance normative development and mental health</p>
+  </div><!-- End Section Title -->
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row justify-content-center">
+      
+      <!-- Consultancy and Advisory Services -->
+      <div class="col-lg-6 col-md-8" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-card">
+          <div class="service-icon">
+            <div class="icon-wrapper">
+              <i class="bi bi-person-check"></i>
+            </div>
+          </div>
+          <div class="service-content">
+            <h3>Consultancy and Advisory</h3>
+            <p class="service-description">
+              Professional consultancy and advisory on psychological interventions for normative development and mental health
+            </p>
+            <ul class="service-features">
+              <li>Policy formulation</li>
+              <li>Strategy development</li>
+              <li>Programme planning</li>
+              <li>Psychological assessment</li>
+              <li>Supervision services</li>
+            </ul>
+            <div class="service-actions">
+              <a href="#booking" class="btn btn-primary">
+                Book Consultation
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Counselling and Psychotherapy Services -->
+      <div class="col-lg-6 col-md-8" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-card">
+          <div class="service-icon">
+            <div class="icon-wrapper">
+              <i class="bi bi-chat-dots"></i>
+            </div>
+          </div>
+          <div class="service-content">
+            <h3>Counselling and Psychotherapy</h3>
+            <p class="service-description">
+              Professional therapeutic services for individuals, couples, families and groups
+            </p>
+            <ul class="service-features">
+              <li>Individual therapy</li>
+              <li>Couple counselling</li>
+              <li>Family therapy</li>
+              <li>Group counselling</li>
+              <li>Mental health support</li>
+            </ul>
+            <div class="service-actions">
+              <a href="#booking" class="btn btn-primary">
+                Book Session
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Training Services -->
+      <div class="col-lg-6 col-md-8" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-card">
+          <div class="service-icon">
+            <div class="icon-wrapper">
+              <i class="bi bi-mortarboard"></i>
+            </div>
+          </div>
+          <div class="service-content">
+            <h3>Training Programs</h3>
+            <p class="service-description">
+              Comprehensive training programs for personal and professional development
+            </p>
+            <ul class="service-features">
+              <li>Basic counselling skills</li>
+              <li>Emotional Intelligence</li>
+              <li>Life Skills training</li>
+              <li>Mental Health Awareness</li>
+              <li>Mind Transformation Coaching</li>
+              <li>Parental Education</li>
+              <li>Psychological Safety</li>
+            </ul>
+            <div class="service-actions">
+              <a href="#booking" class="btn btn-primary">
+                Book Training
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+<!-- /Services Section -->
+
+<style>
+.services {
+  background: #f8f9fa;
+  padding: 80px 0;
+}
+
+.section-title h2 {
+  color: #2c5aa0;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.section-title p {
+  color: #666;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+
+.service-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px 30px;
+  border: 1px solid #e8f1ff;
+  transition: all 0.3s ease;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(44, 90, 160, 0.08);
+  margin-bottom: 30px;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(135deg, #2c5aa0, #4a7bc8);
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(44, 90, 160, 0.15);
+  border-color: #2c5aa0;
+}
+
+.service-icon {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.icon-wrapper {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #2c5aa0, #4a7bc8);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.icon-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border: 2px solid #e8f1ff;
+  border-radius: 50%;
+  top: -5px;
+  left: -5px;
+}
+
+.icon-wrapper i {
+  font-size: 2.2rem;
+  color: white;
+}
+
+.service-content h3 {
+  color: #2c5aa0;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.service-description {
+  color: #666;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.service-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.service-features li {
+  padding: 10px 15px;
+  background: #f8faff;
+  border-radius: 8px;
+  color: #2c5aa0;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid #e8f1ff;
+}
+
+.service-features li:hover {
+  background: #2c5aa0;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.service-actions {
+  text-align: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2c5aa0, #4a7bc8);
+  color: white;
+  border: none;
+  padding: 14px 35px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(44, 90, 160, 0.3);
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .services {
+    padding: 60px 0;
+  }
+  
+  .service-card {
+    padding: 30px 20px;
+    margin-bottom: 30px;
+  }
+  
+  .service-features {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .service-features li {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .icon-wrapper {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .icon-wrapper i {
+    font-size: 1.8rem;
+  }
+  
+  .service-content h3 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-card {
+    padding: 25px 15px;
+  }
+  
+  .btn-primary {
+    padding: 12px 25px;
+    font-size: 0.9rem;
+  }
+}
+</style>
+  <!-- Stats Section -->
+<section id="stats" class="stats section">
+
+  <!-- Section Title -->
+  <div class="container section-title text-center" data-aos="fade-up" id="approach">
+    <h2>Our Professional Impact</h2>
+    <p>Discover the milestones that define our commitment to enhancing mental health and normative development.</p>
+  </div><!-- End Section Title -->
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+    <div class="row gy-4">
+
+      <!-- Stats Item -->
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center">
+          <div class="icon mb-3">
+            <i class="bi bi-person-check" style="font-size: 2rem; color: #2c5aa0;"></i>
+          </div>
+          <span data-purecounter-start="0" data-purecounter-end="500" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Clients Served</p>
+        </div>
+      </div><!-- End Stats Item -->
+
+      <!-- Stats Item -->
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center">
+          <div class="icon mb-3">
+            <i class="bi bi-chat-dots" style="font-size: 2rem; color: #2c5aa0;"></i>
+          </div>
+          <span data-purecounter-start="0" data-purecounter-end="2500" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Therapy Sessions</p>
+        </div>
+      </div><!-- End Stats Item -->
+
+      <!-- Stats Item -->
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center">
+          <div class="icon mb-3">
+            <i class="bi bi-mortarboard" style="font-size: 2rem; color: #2c5aa0;"></i>
+          </div>
+          <span data-purecounter-start="0" data-purecounter-end="100" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Training Programs</p>
+        </div>
+      </div><!-- End Stats Item -->
+
+      <!-- Stats Item -->
+      <div class="col-lg-3 col-md-6">
+        <div class="stats-item text-center">
+          <div class="icon mb-3">
+            <i class="bi bi-building" style="font-size: 2rem; color: #2c5aa0;"></i>
+          </div>
+          <span data-purecounter-start="0" data-purecounter-end="50" data-purecounter-duration="1" class="purecounter"></span>
+          <p>Organizations Served</p>
+        </div>
+      </div><!-- End Stats Item -->
+
+    </div>
+
+  </div>
+
+</section>
+
+<style>
+.stats {
+  padding: 80px 0;
+  background: #f8f9fa;
+}
+
+.section-title h2 {
+  color: #2c5aa0;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.section-title p {
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.stats-item {
+  background: white;
+  padding: 40px 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.stats-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.stats-item .icon {
+  width: 80px;
+  height: 80px;
+  background: rgba(44, 90, 160, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.stats-item span {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c5aa0;
+  margin: 15px 0;
+}
+
+.stats-item p {
+  color: #666;
+  font-weight: 600;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .stats-item {
+    margin-bottom: 20px;
+  }
+  
+  .stats-item span {
+    font-size: 2rem;
+  }
+}
+</style>
+
+
+
+    <!-- FAQ Section -->
+<section class="faq-9 faq section" id="faq">
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-5" data-aos="fade-up">
+        <h2 class="faq-title">Frequently Asked Questions</h2>
+        <p class="faq-description">Get answers to common questions about our psychological services, booking process, and how we can support your mental well-being journey.</p>
+        <div class="contact-promo">
+          <div class="contact-item">
+            <i class="bi bi-telephone"></i>
+            <div>
+              <strong>Call Us</strong>
+              <p>0758283613</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="bi bi-envelope"></i>
+            <div>
+              <strong>Email Us</strong>
+              <p>mwasawellservices@gmail.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7" data-aos="fade-up" data-aos-delay="300">
+        <div class="faq-container">
+
+          <!-- FAQ 1 -->
+          <div class="faq-item faq-active">
+            <h3>What types of psychological services do you offer?</h3>
+            <div class="faq-content">
+              <p>We provide comprehensive psychological services including professional consultancy, counselling/psychotherapy, and training programs. Our services cover individual, couple, family, and group therapy sessions, as well as organizational mental health programs.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-down"></i>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="faq-item">
+            <h3>How do I book an appointment?</h3>
+            <div class="faq-content">
+              <p>You can book appointments through our website, by calling us directly at 0758283613, or by emailing mwasawellservices@gmail.com. We offer in-person, telephone, and online sessions for your convenience.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="faq-item">
+            <h3>What are your service fees and payment options?</h3>
+            <div class="faq-content">
+              <p>Our services are affordably priced with consultation fees starting from KSh 3,500. We accept M-Pesa payments and other mobile money transfers. Detailed pricing is available on our services page.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="faq-item">
+            <h3>Are your services confidential?</h3>
+            <div class="faq-content">
+              <p>Yes, confidentiality is a cornerstone of our practice. All sessions and client information are kept strictly confidential in accordance with professional psychological ethics and Kenyan data protection laws.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div>
+
+          <!-- FAQ 5 -->
+          <div class="faq-item">
+            <h3>Do you offer services for organizations and companies?</h3>
+            <div class="faq-content">
+              <p>Absolutely. We provide organizational mental health services including employee assistance programs, mental health awareness training, leadership coaching, and workplace psychological safety assessments.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div>
+
+          <!-- FAQ 6 -->
+          <div class="faq-item">
+            <h3>What qualifications do your psychologists have?</h3>
+            <div class="faq-content">
+              <p>Our team consists of registered and licensed psychologists with advanced degrees in psychology and extensive experience. We maintain current knowledge of global professional standards and evidence-based practices.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div>
+
+          <!-- FAQ 7 -->
+          <div class="faq-item">
+            <h3>Can I get psychological assessment services?</h3>
+            <div class="faq-content">
+              <p>Yes, we offer comprehensive psychological assessments for various purposes including educational placement, career guidance, mental health diagnosis, and organizational evaluations.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div>
+
+          <!-- FAQ 8 -->
+          <div class="faq-item">
+            <h3>What is your approach to therapy?</h3>
+            <div class="faq-content">
+              <p>We use evidence-based, client-centered approaches tailored to individual needs. Our methods include cognitive-behavioral therapy, solution-focused therapy, and other proven psychological interventions that align with global best practices.</p>
+            </div>
+            <i class="faq-toggle bi bi-chevron-right"></i>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.faq {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 80px 0;
+}
+
+.faq-title {
+  color: #2c5aa0;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+}
+
+.faq-description {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.contact-promo {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  border-left: 4px solid #2c5aa0;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+.contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.contact-item i {
+  width: 50px;
+  height: 50px;
+  background: #2c5aa0;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.contact-item strong {
+  color: #2c5aa0;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.contact-item p {
+  margin: 0;
+  color: #666;
+  font-weight: 500;
+}
+
+.faq-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.faq-item {
+  border-bottom: 1px solid #e9ecef;
+  padding: 25px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-item:hover {
+  background: #f8f9fa;
+}
+
+.faq-item.faq-active {
+  background: #f0f7ff;
+  border-left: 4px solid #2c5aa0;
+}
+
+.faq-item h3 {
+  color: #2c5aa0;
+  font-weight: 600;
+  margin: 0;
+  padding-right: 40px;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.faq-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faq-active .faq-content {
+  max-height: 500px;
+  margin-top: 15px;
+}
+
+.faq-content p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.faq-toggle {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2c5aa0;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.faq-active .faq-toggle {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+@media (max-width: 991px) {
+  .faq-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  .faq-description {
+    text-align: center;
+  }
+  
+  .contact-promo {
+    margin-bottom: 30px;
+  }
+  
+  .faq-item {
+    padding: 20px;
+  }
+  
+  .faq-item h3 {
+    font-size: 1rem;
+  }
+}
+
+/* Animation for FAQ items */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.faq-item {
+  animation: fadeIn 0.5s ease;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const faqItems = document.querySelectorAll('.faq-item');
+  
+  faqItems.forEach(item => {
+    item.addEventListener('click', function() {
+      // Close all other items
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('faq-active');
+          otherItem.querySelector('.faq-toggle').classList.remove('bi-chevron-down');
+          otherItem.querySelector('.faq-toggle').classList.add('bi-chevron-right');
+        }
+      });
+      
+      // Toggle current item
+      this.classList.toggle('faq-active');
+      const toggleIcon = this.querySelector('.faq-toggle');
+      
+      if (this.classList.contains('faq-active')) {
+        toggleIcon.classList.remove('bi-chevron-right');
+        toggleIcon.classList.add('bi-chevron-down');
+      } else {
+        toggleIcon.classList.remove('bi-chevron-down');
+        toggleIcon.classList.add('bi-chevron-right');
+      }
+    });
+  });
+});
+</script>
+
+
+
+
+   <!-- Horizontal Booking Section -->
+<section id="booking" class="booking section">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Quick Booking</h2>
+    <p>Book your session in just a few steps</p>
+  </div><!-- End Section Title -->
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="horizontal-booking-form">
+      <form id="horizontalBookingForm" method="post" action="{% url 'submit_booking' %}">
+        {% csrf_token %}
+        <div class="form-row">
+          
+          <!-- Personal Info -->
+          <div class="form-group">
+            <label>Your Name *</label>
+            <input type="text" class="form-control" name="fullName" placeholder="Full Name" required>
+          </div>
+
+          <!-- ADDED EMAIL FIELD -->
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" class="form-control" name="email" placeholder="your@email.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>Phone *</label>
+            <input type="tel" class="form-control" name="phone" placeholder="Phone Number" required>
+          </div>
+
+          <!-- Service Selection -->
+          <div class="form-group">
+            <label>Service *</label>
+            <select class="form-control" name="serviceType" required>
+              <option value="">Choose Service</option>
+              <option value="individual">Individual & Family Services</option>
+              <option value="organizational">Organizational & Training Services</option>
+              <option value="organizational">Training & Capacity Building</option>
+            </select>
+          </div>
+
+          <!-- Date & Time -->
+          <div class="form-group">
+            <label>Date *</label>
+            <input type="date" class="form-control" name="preferredDate" min="" required>
+          </div>
+
+          <div class="form-group">
+            <label>Time *</label>
+            <select class="form-control" name="preferredTime" required>
+              <option value="">Select Time</option>
+              <option value="08:00">8:00 AM</option>
+              <option value="09:00">9:00 AM</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="11:00">11:00 AM</option>
+              <option value="14:00">2:00 PM</option>
+              <option value="15:00">3:00 PM</option>
+              <option value="16:00">4:00 PM</option>
+            </select>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group">
+            <label>&nbsp;</label>
+            <button type="submit" class="btn btn-primary btn-book">
+              Book Now
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Description Field - Below the main form -->
+        <div class="description-row">
+          <div class="form-group-full">
+            <label>Brief Description of Your Concern *</label>
+            <textarea class="form-control" name="description" rows="3" placeholder="Please briefly describe what you'd like to discuss..." required></textarea>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Quick Contact -->
+    <div class="quick-contact-horizontal">
+      <div class="contact-item">
+        <span>📞 0758283613</span>
+      </div>
+      <div class="contact-item">
+        <span>✉️ mwasawellservices@gmail.com</span>
+      </div>
+      <div class="contact-item">
+        <span>🕒 Mon-Fri: 8AM-6PM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.booking {
+  background: #f8f9fa;
+  padding: 60px 0;
+}
+
+.horizontal-booking-form {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.description-row {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 150px;
+}
+
+.form-group-full {
+  width: 100%;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.form-group-full label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.form-control {
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 12px 15px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-family: inherit;
+}
+
+.form-control:focus {
+  border-color: #2c5aa0;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.btn-book {
+  background: #2c5aa0;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.btn-book:hover {
+  background: #1e3d6f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+}
+
+.quick-contact-horizontal {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #2c5aa0;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .form-row {
+    gap: 12px;
+  }
+  
+  .form-group {
+    min-width: 140px;
+  }
+  
+  .quick-contact-horizontal {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .form-group {
+    min-width: 100%;
+  }
+  
+  .quick-contact-horizontal {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .horizontal-booking-form {
+    padding: 25px 20px;
+  }
+  
+  .contact-item {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    gap: 12px;
+  }
+  
+  .form-control {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .btn-book {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .quick-contact-horizontal {
+    padding: 15px;
+    gap: 12px;
+  }
+  
+  .contact-item {
+    font-size: 0.9rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Set minimum date to today
+  const today = new Date().toISOString().split('T')[0];
+  document.querySelector('input[name="preferredDate"]').min = today;
+  
+  const bookingForm = document.getElementById('horizontalBookingForm');
+  
+  // Form submission
+  bookingForm.addEventListener('submit', function(e) {
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    
+    // Show loading state
+    submitButton.innerHTML = 'Processing...';
+    submitButton.disabled = true;
+    
+    // Form will be submitted to Django backend
+    // The success message will be handled by Django
+  });
+});
+</script>
+
+  </main>
+
+  <footer id="footer" class="footer">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="/" class="logo d-flex align-items-center">
+            <span class="sitename">Mwasamwanda Well-being Services</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Southern House, Murang'a Road</p>
+            <p>Off Mot Avenue, Fourth Floor</p>
+            <p>Nairobi, KENYA</p>
+            <p>P.O. Box 51646 – 00100</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>0758283613</span></p>
+            <p><strong>Email:</strong> <span>mwasawellservices@gmail.com</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <a href="https://facebook.com" target="_blank"><i class="bi bi-facebook"></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a>
+            <a href="https://x.com" target="_blank"><i class="bi bi-twitter-x"></i></a>
+            <a href="https://youtube.com" target="_blank"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+  
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#features">About Us</a></li>
+            <li><a href="#services">Our Services</a></li>
+            <li><a href="#booking">Booking</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+  
+        <div class="col-lg-3 col-md-3 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#services">Consultancy and Advisory</a></li>
+            <li><a href="#services">Counselling and Psychotherapy</a></li>
+            <li><a href="#services">Training</a></li>
+          </ul>
+        </div>
+  
+        <div class="col-lg-3 col-md-6 footer-newsletter">
+          <h4>Mental Health Insights</h4>
+          <p>Subscribe for normative development and mental health tips and service updates.</p>
+          <form action="{% url 'subscribe_newsletter' %}" method="post">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit" class="btn">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+    <div class="container copyright text-center mt-4">
+      <p>© <strong>Mwasamwanda Well-being Services</strong> All Rights Reserved</p>
+      <div class="credits">
+        Designed by <a href="#">Mancham Developer</a>
+      </div>
+    </div>
+  
+  </footer>
+
+<style>
+.footer-newsletter .btn {
+  background: #2c5aa0;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #2c5aa0;
+}
+
+.footer-newsletter .btn:hover {
+  background: white;
+  color: #2c5aa0;
+  transform: translateY(-2px);
+}
+
+.footer-newsletter input {
+  border: 2px solid #e0e0e0;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.footer-newsletter input:focus {
+  outline: none;
+  border-color: #2c5aa0;
+}
+</style>
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'main.js' %}"></script>
+
+</body>

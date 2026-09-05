@@ -1,0 +1,6 @@
+@"
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/static/
+RewriteCond %{REQUEST_URI} !^/media/
+RewriteRule ^(.*)$ /passenger_wsgi.py/$1 [QSA,PT,L]
+"@ | Out-File -FilePath ".htaccess" -Encoding utf8

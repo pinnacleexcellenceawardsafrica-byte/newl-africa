@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Springboard Capital · Errands Kenya</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    :root {
+      --dark: #0D2645;
+      --navy-light: #15355E;
+      --gold: #E9A824;
+      --gold-soft: #F4C766;
+      --ivory: #FFFFFF;
+      --white: #FFFFFF;
+      --ink: #0D2645;
+      --muted: #5C6A80;
+      --line: rgba(13,38,69,.09);
+      --line-light: rgba(255,255,255,.14);
+      --font-display: 'Quicksand', sans-serif;
+      --font-body: 'Quicksand', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: #f4f7f6;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+    }
+
+    .navbar-moika {
+      padding: .85rem 0;
+      transition: all .3s ease;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1200;
+      background: rgba(13,38,69,0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line-light);
+    }
+    .navbar-brand-moika {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      color: var(--ivory);
+      font-family: var(--font-display);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    .navbar-brand-moika span { color: var(--gold); }
+    .navbar-brand-moika .sub {
+      display: block;
+      font-size: .45rem;
+      letter-spacing: .2em;
+      font-weight: 600;
+      color: #A9B7CC;
+      margin-top: -2px;
+      font-family: var(--font-body);
+    }
+    .navbar-secure {
+      color: #A9B7CC;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .navbar-secure i { color: var(--gold); }
+
+    .nominate-hero {
+      padding: 120px 0 40px;
+      background: var(--dark);
+      color: var(--ivory);
+    }
+    .nominate-hero h1 {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-weight: 700;
+      font-family: var(--font-display);
+    }
+    .nominate-hero p {
+      color: #B7C6BE;
+      font-size: 1.02rem;
+    }
+    .eyebrow {
+      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700;
+      color: var(--gold-soft); display: inline-flex; align-items: center; gap: .55rem;
+    }
+    .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--gold); display: inline-block; }
+
+    .form-wrap { padding: 30px 0 60px; }
+    .form-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2.6rem;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 24px 60px rgba(7,26,51,0.16);
+    }
+    @media (max-width: 767px) {
+      .form-card { padding: 1.7rem 1.3rem; }
+      .nominate-hero { padding: 108px 0 32px; }
+    }
+
+    .service-card {
+      background: #fafbfa;
+      border-radius: 16px;
+      padding: 1.5rem 1.2rem;
+      border: 1px solid var(--line);
+      transition: all 0.25s ease;
+      height: 100%;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+      border-color: var(--gold);
+    }
+    .service-card .icon-wrap {
+      width: 52px;
+      height: 52px;
+      background: rgba(233,168,36,0.12);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .service-card .icon-wrap i {
+      color: var(--gold);
+      font-size: 1.6rem;
+    }
+    .service-card .price-tag {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--dark);
+      font-family: var(--font-display);
+    }
+    .service-card .price-tag small {
+      font-size: .7rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+    .service-card .service-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin-top: .2rem;
+    }
+    .service-card .service-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-top: .3rem;
+    }
+
+    .badge-gold {
+      background: var(--gold);
+      color: var(--dark);
+      font-weight: 700;
+      font-size: .7rem;
+      padding: .25rem .8rem;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .btn-submit-nom {
+      width: 100%;
+      background: var(--gold);
+      color: var(--dark);
+      font-weight: 700;
+      font-size: .82rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .95rem;
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 8px 26px rgba(245,200,66,.35);
+      transition: all .28s ease;
+      cursor: pointer;
+    }
+    .btn-submit-nom:hover { background: var(--gold-soft); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(245,200,66,.5); }
+    .btn-submit-nom:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none; }
+
+    .btn-outline-gold {
+      background: transparent;
+      border: 2px solid var(--gold);
+      color: var(--dark);
+      font-weight: 700;
+      font-size: .82rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .85rem;
+      border-radius: 30px;
+      transition: all .28s ease;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn-outline-gold:hover {
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    .footer-moika { background: #081627; color: #A9B7CC; padding: 2rem 0 1.2rem; text-align: center; font-size: .78rem; }
+
+    .toast-moika {
+      position: fixed; bottom: 1.3rem; left: 1.3rem; z-index: 2000;
+      background: var(--dark); color: var(--ivory);
+      padding: .85rem 1.2rem; border-radius: 6px;
+      border-left: 3px solid var(--gold);
+      box-shadow: 0 10px 26px rgba(0,0,0,.3);
+      transform: translateY(120%); opacity: 0;
+      transition: all .28s ease;
+      font-size: .85rem; max-width: 320px;
+    }
+    .toast-moika.show { transform: translateY(0); opacity: 1; }
+    .toast-moika.error { border-left-color: #C0392B; }
+
+    .about-section {
+      background: white;
+      border-radius: 16px;
+      padding: 1.8rem 1.8rem;
+      border: 1px solid var(--line);
+      margin-top: 2rem;
+    }
+    .about-section h3 {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--dark);
+      font-family: var(--font-display);
+    }
+    .about-section p {
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    [data-step-panel] { display: none; }
+    [data-step-panel].active { display: block; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { [data-step-panel].active { animation: none; } }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar-moika">
+  <div class="container d-flex justify-content-between align-items-center">
+    <span class="navbar-brand-moika">SPRINGBOARD <span>CAPITAL</span><span class="sub">ERRANDS</span></span>
+    <span class="navbar-secure"><i class="fas fa-running"></i> Town errands</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="nominate-hero">
+  <div class="container text-center">
+    <span class="eyebrow">Springboard Capital · Errands & logistics</span>
+    <h1 class="mt-2">Let us run your town errands</h1>
+    <p class="mx-auto mt-2" style="max-width:520px;">Choose a package, tell us what you need, and we'll handle it — fast, reliable, and secure.</p>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<section class="form-wrap">
+  <div class="container">
+    <div class="form-card">
+
+      <!-- STEP 1 : packages -->
+      <div data-step-panel data-step="1" class="active">
+        <div class="text-center mb-4">
+          <div class="welcome-icon" style="margin: 0 auto 1rem auto;"><i class="fas fa-concierge-bell"></i></div>
+          <h2 class="step-heading">Choose your errand package</h2>
+          <p class="step-sub">Select the plan that fits your needs. We'll handle the rest.</p>
+        </div>
+
+        <div class="row g-3">
+          <!-- Package 1: 2500 -->
+          <div class="col-md-4">
+            <div class="service-card text-center">
+              <div class="icon-wrap" style="margin-left: auto; margin-right: auto;"><i class="fas fa-walking"></i></div>
+              <div class="price-tag">KES 2,500 <small>+ fuel</small></div>
+              <div class="service-name">Basic Errand</div>
+              <div class="service-desc">Pickup & delivery, document drop-off, small purchases within CBD.</div>
+              <span class="badge-gold mt-2">same-day</span>
+            </div>
+          </div>
+          <!-- Package 2: 3500 -->
+          <div class="col-md-4">
+            <div class="service-card text-center">
+              <div class="icon-wrap" style="margin-left: auto; margin-right: auto;"><i class="fas fa-tasks"></i></div>
+              <div class="price-tag">KES 3,500 <small>+ fuel</small></div>
+              <div class="service-name">Standard Errand</div>
+              <div class="service-desc">Multiple stops, shopping, bank deposits, and courier services.</div>
+              <span class="badge-gold mt-2">4hr turnaround</span>
+            </div>
+          </div>
+          <!-- Package 3: 5000 -->
+          <div class="col-md-4">
+            <div class="service-card text-center">
+              <div class="icon-wrap" style="margin-left: auto; margin-right: auto;"><i class="fas fa-rocket"></i></div>
+              <div class="price-tag">KES 5,000 <small>+ fuel</small></div>
+              <div class="service-name">Priority Errand</div>
+              <div class="service-desc">Full-day dedicated runner, airport pickups, bulk shopping, and more.</div>
+              <span class="badge-gold mt-2">express</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button type="button" class="btn-submit-nom" style="max-width: 280px; margin: 0 auto;" data-next>Get started</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 : details & description -->
+      <div data-step-panel data-step="2">
+        <div class="form-section-label">Tell us about your errand</div>
+
+        <div class="field" data-field="fullName">
+          <label class="form-label-moika" for="fullName">Your full name</label>
+          <input type="text" class="form-control-moika" id="fullName" placeholder="e.g. Wanjiru Mwangi" autocomplete="name">
+          <div class="field-err">Please enter your name.</div>
+        </div>
+
+        <div class="field" data-field="phone">
+          <label class="form-label-moika" for="phone">Phone number</label>
+          <input type="tel" class="form-control-moika" id="phone" placeholder="0712 345 678">
+          <div class="field-err">Please enter a valid phone number.</div>
+        </div>
+
+        <div class="field" data-field="package">
+          <label class="form-label-moika" for="packageSelect">Select package</label>
+          <select class="form-select-moika" id="packageSelect">
+            <option value="Basic Errand (KES 2,500)">Basic Errand · KES 2,500</option>
+            <option value="Standard Errand (KES 3,500)">Standard Errand · KES 3,500</option>
+            <option value="Priority Errand (KES 5,000)">Priority Errand · KES 5,000</option>
+          </select>
+        </div>
+
+        <div class="field" data-field="errandDesc">
+          <label class="form-label-moika" for="errandDesc">Describe your errand</label>
+          <textarea class="form-control-moika" id="errandDesc" rows="3" placeholder="What do you need done? Pickup from, drop-off to, special instructions..."></textarea>
+          <div class="field-err">Please describe your errand.</div>
+        </div>
+
+        <button type="button" class="btn-submit-nom mt-2" data-next>Next</button>
+        <button type="button" class="btn-back-nom" data-prev>← Back</button>
+      </div>
+
+      <!-- STEP 3 : review & confirm -->
+      <div data-step-panel data-step="3">
+        <div class="form-section-label">Review your errand</div>
+        <p class="step-sub" style="margin-bottom:1.2rem;">Please confirm the details before we dispatch a runner.</p>
+
+        <div class="review-list">
+          <div class="review-row">
+            <div class="r-icon"><i class="fas fa-user"></i></div>
+            <div><div class="r-label">Name</div><div class="r-value" id="rvName">—</div></div>
+          </div>
+          <div class="review-row">
+            <div class="r-icon"><i class="fas fa-phone"></i></div>
+            <div><div class="r-label">Phone</div><div class="r-value" id="rvPhone">—</div></div>
+          </div>
+          <div class="review-row">
+            <div class="r-icon"><i class="fas fa-box"></i></div>
+            <div><div class="r-label">Package</div><div class="r-value" id="rvPackage">—</div></div>
+          </div>
+          <div class="review-row">
+            <div class="r-icon"><i class="fas fa-pen"></i></div>
+            <div><div class="r-label">Errand details</div><div class="r-value" id="rvDesc">—</div></div>
+          </div>
+        </div>
+
+        <button type="button" class="btn-submit-nom mt-3" id="confirmBtn">Confirm & dispatch</button>
+        <button type="button" class="btn-back-nom" data-prev>← Back</button>
+      </div>
+
+      <!-- STEP 4 : success / payment placeholder -->
+      <div data-step-panel data-step="4">
+        <div class="text-center py-3">
+          <div class="welcome-icon" style="margin: 0 auto 1.2rem auto; background: rgba(233,168,36,0.2);">
+            <i class="fas fa-check-circle" style="color: var(--gold); font-size: 2rem;"></i>
+          </div>
+          <h2 class="step-heading">Errand confirmed!</h2>
+          <p class="step-sub">We've received your request. A runner will be assigned shortly.</p>
+          <div class="secured-box" style="background: #fdf6e6; border-color: var(--gold);">
+            <div class="secured-label"><i class="fas fa-coins" style="color: var(--gold);"></i> Payment</div>
+            <div class="pay-badges" style="gap: .8rem;">
+              <span class="badge-pay">M-PESA</span>
+              <span class="badge-pay">Bank transfer</span>
+              <span class="badge-pay">Cash</span>
+            </div>
+            <p class="mt-2" style="font-size: .8rem; color: var(--muted);">Pay on completion or via M-PESA Paybill.</p>
+          </div>
+          <button type="button" class="btn-outline-gold" onclick="location.reload();">Start another errand</button>
+        </div>
+      </div>
+
+      <!-- About section (visible on step 1) -->
+      <div class="about-section" id="aboutSection">
+        <h3><i class="fas fa-info-circle" style="color: var(--gold); margin-right: .5rem;"></i>About Springboard Capital Errands</h3>
+        <p>Springboard Capital is a Nairobi-based errand and logistics service dedicated to making your day easier. Whether you need documents delivered, shopping done, or a dedicated runner for the day — we've got you covered. Our team is professional, insured, and tracked in real-time. Choose a package that fits your budget and let us handle the rest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer-moika">
+  Springboard Capital · We run your town errands so you can focus on what matters.
+</footer>
+
+<div class="toast-moika" id="toastMoika"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var currentStep = 1;
+  var totalSteps = 4;
+
+  var panels = document.querySelectorAll("[data-step-panel]");
+  var aboutSection = document.getElementById("aboutSection");
+
+  function showToast(msg, isError){
+    var t = document.getElementById("toastMoika");
+    t.textContent = msg;
+    t.classList.toggle("error", !!isError);
+    t.classList.add("show");
+    setTimeout(function(){ t.classList.remove("show"); }, 4000);
+  }
+
+  function showStep(step){
+    panels.forEach(function(p){
+      p.classList.toggle("active", parseInt(p.getAttribute("data-step"), 10) === step);
+    });
+    currentStep = step;
+
+    // hide about section on steps > 1
+    if (aboutSection) {
+      aboutSection.style.display = (step === 1) ? 'block' : 'none';
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function goNext(){
+    if (!validateStep(currentStep)) return;
+    if (currentStep === 2) populateReview();
+    if (currentStep < totalSteps) showStep(currentStep + 1);
+  }
+
+  function goPrev(){
+    if (currentStep > 1) showStep(currentStep - 1);
+  }
+
+  document.querySelectorAll("[data-next]").forEach(function(btn){
+    btn.addEventListener("click", goNext);
+  });
+  document.querySelectorAll("[data-prev]").forEach(function(btn){
+    btn.addEventListener("click", goPrev);
+  });
+
+  function setInvalid(fieldEl, invalid){
+    fieldEl.classList.toggle("invalid", invalid);
+  }
+
+  function validateStep(step){
+    var valid = true;
+
+    if (step === 2){
+      var name = document.getElementById("fullName");
+      var phone = document.getElementById("phone");
+      var desc = document.getElementById("errandDesc");
+
+      var nameOk = name.value.trim().length > 1;
+      setInvalid(name.closest(".field"), !nameOk);
+      if (!nameOk) valid = false;
+
+      var phoneDigits = phone.value.replace(/\D/g, "");
+      var phoneOk = phoneDigits.length >= 9;
+      setInvalid(phone.closest(".field"), !phoneOk);
+      if (!phoneOk) valid = false;
+
+      var descOk = desc.value.trim().length > 3;
+      setInvalid(desc.closest(".field"), !descOk);
+      if (!descOk) valid = false;
+
+      if (!valid) showToast("Please fill in all required fields correctly.", true);
+    }
+
+    return valid;
+  }
+
+  function getFormData(){
+    return {
+      fullName: document.getElementById("fullName").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      package: document.getElementById("packageSelect").value,
+      errandDesc: document.getElementById("errandDesc").value.trim()
+    };
+  }
+
+  function populateReview(){
+    var d = getFormData();
+    document.getElementById("rvName").textContent = d.fullName || "—";
+    document.getElementById("rvPhone").textContent = d.phone || "—";
+    document.getElementById("rvPackage").textContent = d.package || "—";
+    document.getElementById("rvDesc").textContent = d.errandDesc || "—";
+  }
+
+  // confirm button -> step 4 (success)
+  var confirmBtn = document.getElementById("confirmBtn");
+  confirmBtn.addEventListener("click", function(){
+    var d = getFormData();
+    if (!d.fullName || !d.phone || !d.errandDesc) {
+      showToast("Please fill in all details first.", true);
+      return;
+    }
+    // simulate submission
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Submitting…";
+
+    setTimeout(function(){
+      showToast("Errand dispatched! We'll call you shortly.");
+      confirmBtn.disabled = false;
+      confirmBtn.textContent = "Confirm & dispatch";
+      showStep(4);
+    }, 800);
+  });
+
+  // ensure about is visible on load
+  showStep(1);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+
+
+{% block title %}NEW BOOKING REQUEST - Mwasamwanda Well-being Services{% endblock %}
+
+{% block header %}
+<div class="email-header" style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);">
+    <h1 class="logo-text">📋 NEW BOOKING ALERT</h1>
+    <p class="logo-tagline">Action Required - Client Appointment Request</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="content-section">
+    <h2 class="content-title" style="color: #4CAF50;">New Service Booking Request</h2>
+    
+    <div style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: white; padding: 15px; border-radius: 8px; margin-bottom: 25px; text-align: center;">
+        <h3 style="margin: 0; font-size: 18px;">⚠️ ACTION REQUIRED: Please contact client within 24 hours</h3>
+    </div>
+    
+    <div class="highlight-box" style="border-left-color: #4CAF50;">
+        <h3 style="color: #4CAF50; margin-bottom: 20px;">👤 Client Information</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Full Name</div>
+                <div class="info-value">{{ booking.full_name }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Email</div>
+                <div class="info-value" style="word-break: break-all;">{{ booking.email }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Phone</div>
+                <div class="info-value">{{ booking.phone }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Submitted</div>
+                <div class="info-value">{{ booking.submitted_at|date:"M d, Y g:i A" }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="highlight-box" style="border-left-color: #2196F3;">
+        <h3 style="color: #2196F3; margin-bottom: 20px;">🎯 Service Details</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Service Type</div>
+                <div class="info-value">
+                    <span style="display: inline-block; padding: 4px 12px; background: #e3f2fd; color: #2196F3; border-radius: 20px; font-weight: 600;">
+                        {{ booking.get_service_type_display }}
+                    </span>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Session Mode</div>
+                <div class="info-value">
+                    <span style="display: inline-block; padding: 4px 12px; background: #e8f5e9; color: #4CAF50; border-radius: 20px; font-weight: 600;">
+                        {{ booking.get_session_mode_display }}
+                    </span>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Appointment Date</div>
+                <div class="info-value">
+                    <span style="font-weight: 700; color: #ff9800;">
+                        {{ booking.preferred_date|date:"F d, Y" }}
+                    </span>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Appointment Time</div>
+                <div class="info-value">
+                    <span style="font-weight: 700; color: #ff9800;">
+                        {{ booking.preferred_time|time:"g:i A" }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if booking.description %}
+    <div class="highlight-box" style="border-left-color: #9C27B0;">
+        <h3 style="color: #9C27B0; margin-bottom: 15px;">💭 Client's Concern</h3>
+        <div style="background: #f3e5f5; padding: 20px; border-radius: 6px; margin-top: 10px;">
+            <p style="margin: 0; font-style: italic; color: #333;">"{{ booking.description }}"</p>
+        </div>
+        <p style="margin-top: 15px; font-size: 14px; color: #666;">
+            <strong>Analysis:</strong> {{ booking.description|wordcount }} words, {{ booking.description|length }} characters
+        </p>
+    </div>
+    {% endif %}
+    
+    <div style="margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); border-radius: 8px; border: 2px solid #ffb300;">
+        <h3 style="color: #ff6f00; margin-bottom: 15px;">🚀 Quick Actions</h3>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+            <a href="mailto:{{ booking.email }}?subject=Confirmation: {{ booking.get_service_type_display }} Appointment&body=Dear {{ booking.full_name }},%0D%0A%0D%0AThank you for your booking! This email confirms your appointment...%0D%0A%0D%0ABest regards,%0D%0AMwasamwanda Well-being Services" 
+               style="flex: 1; min-width: 200px; text-decoration: none;">
+                <div style="background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: 600;">
+                    📧 Send Confirmation Email
+                </div>
+            </a>
+            
+            <a href="tel:{{ booking.phone }}" 
+               style="flex: 1; min-width: 200px; text-decoration: none;">
+                <div style="background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: 600;">
+                    📞 Call Client Now
+                </div>
+            </a>
+            
+            <a href="https://yourwebsite.com/admin/bookings/{{ booking.id }}/" 
+               style="flex: 1; min-width: 200px; text-decoration: none;">
+                <div style="background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%); color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: 600;">
+                    🔍 View Full Details
+                </div>
+            </a>
+        </div>
+    </div>
+    
+    <h3 style="color: #2c5aa0; margin: 30px 0 15px;">📊 Service Statistics</h3>
+    <div class="info-grid">
+        <div class="info-item" style="text-align: center;">
+            <div class="info-label">Total Bookings Today</div>
+            <div class="info-value" style="font-size: 24px; color: #4CAF50;">{{ today_count }}</div>
+        </div>
+        <div class="info-item" style="text-align: center;">
+            <div class="info-label">{{ booking.get_service_type_display }} This Month</div>
+            <div class="info-value" style="font-size: 24px; color: #2196F3;">{{ service_month_count }}</div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 15px; background: #f5f5f5; border-radius: 8px; font-size: 14px; color: #666;">
+        <p><strong>Note:</strong> This booking is currently in <strong>{{ booking.status }}</strong> status. Update the status after contacting the client.</p>
+        <p style="margin-top: 10px;">Booking ID: <code>{{ booking.id }}</code> | Submitted: {{ booking.submitted_at|timesince }} ago</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="footer">
+    <div style="margin-bottom: 20px;">
+        <p style="color: #666; font-size: 14px;">
+            <strong>Need to access the admin panel?</strong><br>
+            <a href="https://yourwebsite.com/admin" style="color: #4CAF50; text-decoration: none; font-weight: 600;">👉 Click here to manage bookings</a>
+        </p>
+    </div>
+    <div class="contact-info">
+        <p>📞 +254 758 283 613 | 📧 mwasawellservices@gmail.com</p>
+        <p>P.O Box 51646 – 00100, Nairobi, Kenya</p>
+    </div>
+    <p style="font-size: 12px; color: #999; margin-top: 20px;">
+        This is an automated notification from Mwasamwanda Well-being Services.<br>
+        Received at: {% now "F d, Y g:i A" %}
+    </p>
+</div>
+{% endblock %}

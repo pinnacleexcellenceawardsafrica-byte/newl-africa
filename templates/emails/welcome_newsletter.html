@@ -1,0 +1,87 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}Welcome - Mwasamwanda Well-being Services{% endblock %}
+
+{% block header %}
+<div class="email-header">
+    <h1 class="logo">Welcome to Our Community</h1>
+    <p class="tagline">Empowerment, Enhanced Productivity, Happy Life</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="section-title">✨ Welcome Aboard!</div>
+
+<p>Dear Subscriber,</p>
+
+<p>Welcome to the Mwasamwanda Well-being Services community! You've taken an important step towards enhancing your normative development and mental health.</p>
+
+<div class="content-box">
+    <h3 style="color: #2c5aa0; margin-bottom: 20px; font-weight: 600;">🎁 What You'll Receive</h3>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; border: 1px solid #e8f1ff;">
+            <div style="font-size: 24px; margin-bottom: 10px;">💡</div>
+            <div style="color: #2c5aa0; font-weight: 600;">Expert Insights</div>
+            <div style="font-size: 12px; margin-top: 5px;">Psychology tips & research</div>
+        </div>
+        
+        <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; border: 1px solid #e8f1ff;">
+            <div style="font-size: 24px; margin-bottom: 10px;">🎯</div>
+            <div style="color: #2c5aa0; font-weight: 600;">Practical Tools</div>
+            <div style="font-size: 12px; margin-top: 5px;">Wellness strategies</div>
+        </div>
+        
+        <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; border: 1px solid #e8f1ff;">
+            <div style="font-size: 24px; margin-bottom: 10px;">📅</div>
+            <div style="color: #2c5aa0; font-weight: 600;">Events</div>
+            <div style="font-size: 12px; margin-top: 5px;">Workshops & webinars</div>
+        </div>
+        
+        <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; border: 1px solid #e8f1ff;">
+            <div style="font-size: 24px; margin-bottom: 10px;">💝</div>
+            <div style="color: #2c5aa0; font-weight: 600;">Special Offers</div>
+            <div style="font-size: 12px; margin-top: 5px;">Exclusive discounts</div>
+        </div>
+    </div>
+</div>
+
+<h3 style="color: #2c5aa0; margin: 30px 0 15px; font-weight: 600;">🚀 Getting Started</h3>
+
+<div style="margin: 25px 0;">
+    <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+        <div style="background: #2c5aa0; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; font-size: 14px;">1</div>
+        <div>
+            <strong style="color: #2c5aa0;">Explore Our Services</strong>
+            <p style="margin-top: 5px; color: #555;">Discover how we can support your mental wellness journey</p>
+        </div>
+    </div>
+    
+    <div style="display: flex; align-items: flex-start; margin-bottom: 15px;">
+        <div style="background: #2c5aa0; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; font-size: 14px;">2</div>
+        <div>
+            <strong style="color: #2c5aa0;">Connect With Us</strong>
+            <p style="margin-top: 5px; color: #555;">Follow us for daily inspiration</p>
+        </div>
+    </div>
+    
+    <div style="display: flex; align-items: flex-start;">
+        <div style="background: #2c5aa0; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: bold; font-size: 14px;">3</div>
+        <div>
+            <strong style="color: #2c5aa0;">Share Your Journey</strong>
+            <p style="margin-top: 5px; color: #555;">We'd love to hear about your wellness goals</p>
+        </div>
+    </div>
+</div>
+
+<div style="text-align: center; margin: 40px 0;">
+    <a href="https://yourwebsite.com/services" class="btn-primary" style="margin-right: 15px;">Our Services</a>
+    <a href="https://yourwebsite.com/blog" class="btn-primary">Read Our Blog</a>
+</div>
+
+<div style="background: #f8faff; padding: 25px; border-radius: 8px; border: 1px solid #e8f1ff; margin-top: 30px;">
+    <h4 style="color: #2c5aa0; margin-bottom: 15px; font-weight: 600;">🌟 Your First Resource</h4>
+    <p style="margin-bottom: 15px;"><strong>"5 Daily Habits for Mental Wellness"</strong> - Free guide</p>
+    <a href="https://yourwebsite.com/free-guide" class="btn-primary" style="background: #ff6f00; border: none;">Download Guide</a>
+</div>
+{% endblock %}
