@@ -1,12 +1,12 @@
 """
-WSGI config for pinnacle_awards project.
+WSGI config for certificate_generator project.
+It exposes the WSGI callable as a module-level variable named ``application``.
 """
 
 import os
 
 from django.core.wsgi import get_wsgi_application
 
-# Change from 'mwasa.settings' to 'pinnacle_awards.settings'
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pinnacle_awards.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'certificate_generator.settings')
 
 application = get_wsgi_application()
