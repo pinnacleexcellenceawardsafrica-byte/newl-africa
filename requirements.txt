@@ -1,4 +1,4 @@
 Django==4.2.7
-pywin32==306
+psycopg2-binary==2.9.9
 Pillow==10.1.0
 reportlab==4.0.7
