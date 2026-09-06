@@ -7,6 +7,7 @@ print("=" * 60)
 print("Loading Django settings...")
 print(f"Current directory: {os.getcwd()}")
 print(f"Environment variables: RAILWAY={os.environ.get('RAILWAY', 'Not set')}")
+print(f"PORT={os.environ.get('PORT', 'Not set')}")
 print("=" * 60)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,10 +28,17 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://newl-africa-production.up.railway.app',
     'https://*.railway.app',
+    'http://newl-africa-production.up.railway.app',  # Add HTTP for testing
 ]
 
-# Add APPEND_SLASH setting to prevent redirect issues
-APPEND_SLASH = True
+# Security settings - Railway handles SSL at the edge
+SECURE_SSL_REDIRECT = False  # DO NOT redirect - Railway handles SSL
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+
+# Disable APPEND_SLASH to prevent redirects
+APPEND_SLASH = False
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -140,13 +148,6 @@ LOGOUT_REDIRECT_URL = 'login'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
 FILE_UPLOAD_MAX_MEMORY_SIZE = 52428800
-
-if IS_PRODUCTION:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
 
 print("✅ Settings loading complete!")
 print("=" * 60)

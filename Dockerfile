@@ -26,7 +26,10 @@ COPY . /app/
 # Collect static files
 RUN python manage.py collectstatic --noinput || true
 
-# Expose port (Railway will set PORT env var)
+# Use PORT from environment or default to 8080
+ENV PORT=8080
+
+# Expose the port
 EXPOSE $PORT
 
 # Run Django using Gunicorn with dynamic port
