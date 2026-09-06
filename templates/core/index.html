@@ -857,14 +857,13 @@
                 </div>
                 <div class="field">
                     <label>Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" value="admin123">
+                    <input type="password" id="loginPassword" placeholder="••••••••" value="Onis@2026">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Sign In</button>
+                <button type="submit" class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;">
+                    <span id="loginBtnText">Sign In</span>
+                    <span id="loginSpinner" style="display:none;"><span class="spinner"></span></span>
+                </button>
             </form>
-            <div style="margin-top:12px;font-size:12px;color:var(--text-soft);text-align:center;background:var(--bg);padding:10px;border-radius:8px;">
-                <b>Demo Credentials</b><br>
-                Username: <b>admin</b> / Password: <b>admin123</b>
-            </div>
         </div>
     </div>
 
@@ -1202,17 +1201,37 @@
         e.preventDefault();
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPassword').value.trim();
+        const btn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('loginBtnText');
+        const spinner = document.getElementById('loginSpinner');
 
-        if (username === 'admin' && password === 'admin123') {
-            currentUser = { name: 'Admin', role: 'Administrator' };
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('appShell').style.display = 'flex';
-            document.getElementById('sideName').textContent = 'Admin';
-            document.getElementById('sideAvatar').textContent = 'A';
-            loadDashboard();
-        } else {
-            toast('Invalid credentials', 'error');
-        }
+        // Show spinner
+        btn.disabled = true;
+        btnText.textContent = 'Signing In...';
+        spinner.style.display = 'inline-block';
+
+        // Simulate async login
+        setTimeout(() => {
+            if (username === 'admin' && password === 'Onis@2026') {
+                currentUser = { name: 'Admin', role: 'Administrator' };
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appShell').style.display = 'flex';
+                document.getElementById('sideName').textContent = 'Admin';
+                document.getElementById('sideAvatar').textContent = 'A';
+                loadDashboard();
+                
+                // Reset button
+                btn.disabled = false;
+                btnText.textContent = 'Sign In';
+                spinner.style.display = 'none';
+            } else {
+                toast('Invalid credentials', 'error');
+                // Reset button
+                btn.disabled = false;
+                btnText.textContent = 'Sign In';
+                spinner.style.display = 'none';
+            }
+        }, 800);
     }
 
     function logout() {
@@ -2679,7 +2698,7 @@
     console.log('✅ Special rule: TI Dismantling & Warehousing → Ken Juma for double sites');
     console.log('✅ PDF download: With Signatures only (no "without signature" version)');
     console.log('✅ Bulk generation now batches PDF conversion + Book2 status writes server-side');
-    console.log('Use admin/admin123 to login');
+    console.log('Use admin/Onis@2026 to login');
 </script>
 
 </body>
