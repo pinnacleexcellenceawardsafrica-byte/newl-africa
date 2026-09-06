@@ -23,11 +23,14 @@ RUN pip install -r requirements.txt
 # Copy project files
 COPY . /app/
 
-# Collect static files (ignores if STATIC_ROOT not set)
+# List files for debugging
+RUN ls -la /app/
+
+# Collect static files
 RUN python manage.py collectstatic --noinput || true
 
 # Expose port
 EXPOSE 8000
 
-# Run Django using Gunicorn
-CMD ["gunicorn", "certificate_generator.wsgi:application", "--bind", "0.0.0.0:8000", "--workers=2", "--access-logfile=-", "--error-logfile=-"]
+# Run Django using Gunicorn with verbose logging
+CMD ["gunicorn", "certificate_generator.wsgi:application", "--bind", "0.0.0.0:8000", "--workers=2", "--log-level=debug", "--access-logfile=-", "--error-logfile=-"]
