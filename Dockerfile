@@ -2,8 +2,8 @@
 FROM python:3.11-slim
 
 # Prevent Python from writing .pyc files and buffering logs
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Set working directory
 WORKDIR /app
@@ -26,11 +26,8 @@ COPY . /app/
 # Collect static files (ignores if STATIC_ROOT not set)
 RUN python manage.py collectstatic --noinput || true
 
-# Railway sets PORT automatically
-ENV PORT=8000
-
 # Expose port
 EXPOSE 8000
 
-# Run Django using Gunicorn with certificate_generator project
-CMD ["gunicorn", "certificate_generator.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Run Django using Gunicorn
+CMD ["gunicorn", "certificate_generator.wsgi:application", "--bind", "0.0.0.0:8000", "--workers=2", "--access-logfile=-", "--error-logfile=-"]
