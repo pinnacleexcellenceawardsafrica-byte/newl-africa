@@ -6,6 +6,9 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
 
+    # Health check for Railway
+    path('health/', views.health_check, name='health_check'),
+
     # API endpoints
     path('api/upload/', views.api_upload, name='api_upload'),
     path('api/sites/', views.api_sites, name='api_sites'),
@@ -45,4 +48,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    

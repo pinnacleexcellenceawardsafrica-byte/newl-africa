@@ -153,6 +153,31 @@ def api_sites(request):
     return JsonResponse({'sites': data, 'total': len(data)})
 
 
+def health_check(request):
+    """Simple health check endpoint for Railway"""
+    import json
+    from django.db import connection
+    
+    try:
+        # Test database connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            db_connected = True
+    except Exception as e:
+        db_connected = False
+        db_error = str(e)
+    
+    return JsonResponse({
+        'status': 'healthy' if db_connected else 'degraded',
+        'message': 'Certificate Generator is running',
+        'database': 'connected' if db_connected else f'error: {db_error}',
+        'migrations': 'applied',
+        'sites_count': Site.objects.count(),
+        'certificates_count': Certificate.objects.count(),
+    })
+
+
+
 def _delete_certificates_for_site(site):
     """
     Wipe every existing Certificate row (and its Excel/PDF files) for a site.
