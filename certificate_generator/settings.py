@@ -29,6 +29,9 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.railway.app',
 ]
 
+# Add APPEND_SLASH setting to prevent redirect issues
+APPEND_SLASH = True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -76,7 +79,6 @@ print(f"IS_PRODUCTION: {IS_PRODUCTION}")
 
 if IS_PRODUCTION:
     print("PRODUCTION MODE - Using PostgreSQL")
-    # Try to get DATABASE_URL from environment first
     DATABASE_URL = os.environ.get('DATABASE_URL')
     if DATABASE_URL:
         print("✅ DATABASE_URL found in environment")
@@ -85,7 +87,7 @@ if IS_PRODUCTION:
         DATABASE_URL = 'postgresql://postgres:LtgXUeszLiwmJMHIGIMmdKeiYVrvJiXZ@acela.proxy.rlwy.net:27018/railway'
     
     try:
-        print(f"Connecting to database with URL: {DATABASE_URL[:30]}...")
+        print(f"Connecting to database...")
         DATABASES = {
             'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, ssl_require=True)
         }

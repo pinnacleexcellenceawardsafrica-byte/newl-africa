@@ -3,9 +3,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from . import views
 
-urlpatterns = [
-    path('', views.index, name='index'),
+app_name = 'core'
 
+urlpatterns = [
+    # Main page
+    path('', views.index, name='index'),
+    
     # Health check for Railway
     path('health/', views.health_check, name='health_check'),
 
@@ -21,18 +24,12 @@ urlpatterns = [
     path('api/generate-all/', views.api_generate_all, name='api_generate_all'),
     path('api/convert-to-pdf/<str:site_id>/', views.api_convert_to_pdf, name='api_convert_to_pdf'),
 
-    # Downloads - Simplified to only Excel and signed PDF
+    # Downloads
     path('api/download/<str:cert_id>/', views.api_download, name='api_download'),
     path('api/download-pdf/<str:cert_id>/', views.api_download_pdf, name='api_download_pdf'),
     path('api/export-all/', views.api_export_all, name='api_export_all'),
-
-    # Download sorted Excel without merging
     path('api/download-sorted-excel/', views.api_download_sorted_excel, name='api_download_sorted_excel'),
-
-    # Download certificate as Excel only
     path('api/download-certificate-excel/<str:site_id>/', views.api_download_certificate_excel_only, name='api_download_certificate_excel_only'),
-
-    # Download with signature (full certificate) - this is the only PDF version
     path('api/download-certificate-pdf/<str:site_id>/', views.api_download_certificate_pdf, name='api_download_certificate_pdf'),
 
     # File management
@@ -48,3 +45,4 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
